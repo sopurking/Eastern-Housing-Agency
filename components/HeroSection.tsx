@@ -132,7 +132,7 @@ const HeroSection = () => {
         >
           <div className="flex items-center gap-3">
             <img 
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop" 
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop" 
               alt="Agent"
               className="w-12 h-12 rounded-full object-cover"
             />
@@ -152,7 +152,7 @@ const HeroSection = () => {
         className="flex absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
       >
         <div className="flex flex-col items-center gap-2">
-          <div className="text-white/60 text-sm">Scroll to explore</div>
+          {/* <div className="text-white/60 text-sm">Scroll to explore</div> */}
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
