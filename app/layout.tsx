@@ -1,6 +1,7 @@
 // app/layout.ts
 import "./globals.css";
 import { Poppins, Playfair_Display } from "next/font/google";
+import Script from "next/script"; 
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,6 +23,13 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${poppins.variable} ${playfair.variable}`}>
+      <head>
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          async
+          defer
+        />
+      </head>
       <body className="font-sans">{children}</body>
     </html>
   );

@@ -5,8 +5,19 @@ import { motion } from 'framer-motion';
 import { Home, ArrowRight, Play } from 'lucide-react';
 
 const HeroSection = () => {
+  const handleScroll = (id: any) => {
+  const section = document.getElementById(id);
+  if (section) {
+    const offsetTop = section.offsetTop - 80; // adjust offset for navbar height
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth",
+    });
+  }
+ };
+
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" id='home'>
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
@@ -51,6 +62,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-2xl transition"
+                onClick={() => handleScroll("properties")}
               >
                 Browse Properties
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />

@@ -5,8 +5,20 @@ import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
 
 const AboutUs = () => {
+
+    const handleScroll = (id: any) => {
+  const section = document.getElementById(id);
+  if (section) {
+    const offsetTop = section.offsetTop - 80; // adjust offset for navbar height
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth",
+    });
+  }
+ };
+
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-white">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-white" id='about'>
       {/* Decorative Elements */}
       <div className="absolute top-20 right-0 w-72 h-72 bg-orange-100/40 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 left-0 w-72 h-72 bg-orange-50/60 rounded-full blur-3xl"></div>
@@ -65,21 +77,25 @@ const AboutUs = () => {
               <span className="text-orange-500"> Dream Homes</span>
             </h2>
             
-            <p className="text-base md:text-lg text-gray-600 mb-5 md:mb-6 leading-relaxed">
-              For over 15 years, we've been more than just a real estate agency—we've been 
-              your trusted partner in finding the perfect place to call home.
+            <p className="text-base md:text-md text-gray-600 mb-5 md:mb-6 leading-relaxed">
+             Eastern Housing Agency is redefining the rental experience in the East, making it stress-free, fair, and transparent for both tenants and landlords. We eliminate hidden fees, streamline processes, and foster trust between landlords and renters.
             </p>
 
-            <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 leading-relaxed">
-              Our commitment to honesty, transparency, and exceptional service has helped 
-              thousands of families find their dream properties. We believe every client 
-              deserves personalized attention and genuine care.
+            <p className="text-base md:text-md text-gray-600 mb-6 md:mb-8 leading-relaxed">
+            For Renters: Hassle-free guidance, no hidden fees, and transparent support throughout the rental journey.
+            For Landlords: Access to quality tenants, reduced vacancies, and investment protection through expert consulting.
             </p>
+
+            <p className="text-base md:text-md text-gray-600 mb-6 md:mb-8 leading-relaxed">
+           Our Promise: We prioritize people, ensuring renters find their ideal homes and landlords enjoy peace of mind.
+            </p>
+
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-orange-500 hover:bg-orange-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-fit max-sm:w-full"
+              onClick={()=>handleScroll("properties")}
             >
               Find Your Home
             </motion.button>

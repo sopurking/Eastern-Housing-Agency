@@ -5,6 +5,17 @@ import { motion } from 'framer-motion';
 import { Search, Home, FileCheck, Key } from 'lucide-react';
 
 const HowItWorks = () => {
+  const handleScroll = (id: any) => {
+  const section = document.getElementById(id);
+  if (section) {
+    const offsetTop = section.offsetTop - 80; // adjust offset for navbar height
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth",
+    });
+  }
+ };
+
   const steps = [
     {
       icon: Search,
@@ -124,6 +135,7 @@ const HowItWorks = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-orange-500 hover:bg-orange-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            onClick={() => handleScroll("properties")}
           >
             Get Started Today
           </motion.button>
