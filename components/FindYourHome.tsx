@@ -19,74 +19,74 @@ const FindYourHome = () => {
   const dropdownRef = useRef(null);
 
   // Eastern Nigerian states and major cities
-  const easternNigeria = [
-    { state: 'Abia', cities: ['Aba', 'Umuahia', 'Arochukwu', 'Ohafia', 'Bende'] },
-    { state: 'Anambra', cities: ['Awka', 'Onitsha', 'Nnewi', 'Ekwulobia', 'Ihiala'] },
-    { state: 'Ebonyi', cities: ['Abakaliki', 'Afikpo', 'Onueke', 'Ezza', 'Ishielu'] },
-    { state: 'Enugu', cities: ['Enugu', 'Nsukka', 'Agbani', 'Oji River', 'Udi'] },
-    { state: 'Imo', cities: ['Owerri', 'Orlu', 'Okigwe', 'Mbaise', 'Oguta'] }
-  ];
+  // const easternNigeria = [
+  //   { state: 'Abia', cities: ['Aba', 'Umuahia', 'Arochukwu', 'Ohafia', 'Bende'] },
+  //   { state: 'Anambra', cities: ['Awka', 'Onitsha', 'Nnewi', 'Ekwulobia', 'Ihiala'] },
+  //   { state: 'Ebonyi', cities: ['Abakaliki', 'Afikpo', 'Onueke', 'Ezza', 'Ishielu'] },
+  //   { state: 'Enugu', cities: ['Enugu', 'Nsukka', 'Agbani', 'Oji River', 'Udi'] },
+  //   { state: 'Imo', cities: ['Owerri', 'Orlu', 'Okigwe', 'Mbaise', 'Oguta'] }
+  // ];
 
-  // Flatten cities with state info
-  useEffect(() => {
-    const allCities = easternNigeria.flatMap(state => 
-      state.cities.map(city => ({
-        name: city,
-        state: state.state,
-        display: `${city}, ${state.state}`
-      }))
-    );
-    setCities(allCities);
-    setFilteredCities(allCities);
-  }, []);
+  // // Flatten cities with state info
+  // useEffect(() => {
+  //   const allCities = easternNigeria.flatMap(state => 
+  //     state.cities.map(city => ({
+  //       name: city,
+  //       state: state.state,
+  //       display: `${city}, ${state.state}`
+  //     }))
+  //   );
+  //   setCities(allCities);
+  //   setFilteredCities(allCities);
+  // }, []);
 
-  // Filter cities based on search
-  useEffect(() => {
-    if (searchQuery) {
-      const filtered = cities.filter(city => 
-        city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        city.state.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredCities(filtered);
-    } else {
-      setFilteredCities(cities);
-    }
-  }, [searchQuery, cities]);
+  // // Filter cities based on search
+  // useEffect(() => {
+  //   if (searchQuery) {
+  //     const filtered = cities.filter(city => 
+  //       city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       city.state.toLowerCase().includes(searchQuery.toLowerCase())
+  //     );
+  //     setFilteredCities(filtered);
+  //   } else {
+  //     setFilteredCities(cities);
+  //   }
+  // }, [searchQuery, cities]);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowCityDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // // Close dropdown when clicking outside
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setShowCityDropdown(false);
+  //     }
+  //   };
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => document.removeEventListener('mousedown', handleClickOutside);
+  // }, []);
 
-  const handleCitySelect = (city) => {
-    setSelectedCity(city.display);
-    setSearchQuery(city.display);
-    setShowCityDropdown(false);
-  };
+  // const handleCitySelect = (city) => {
+  //   setSelectedCity(city.display);
+  //   setSearchQuery(city.display);
+  //   setShowCityDropdown(false);
+  // };
 
-  const handleSearch = () => {
-    console.log('Search params:', {
-      city: selectedCity,
-      propertyType,
-      priceRange,
-      bedrooms
-    });
-    // Implement actual search logic here
-  };
+  // const handleSearch = () => {
+  //   console.log('Search params:', {
+  //     city: selectedCity,
+  //     propertyType,
+  //     priceRange,
+  //     bedrooms
+  //   });
+  //   // Implement actual search logic here
+  // };
 
-  const clearFilters = () => {
-    setSearchQuery('');
-    setSelectedCity('');
-    setPropertyType('');
-    setPriceRange('');
-    setBedrooms('');
-  };
+  // const clearFilters = () => {
+  //   setSearchQuery('');
+  //   setSelectedCity('');
+  //   setPropertyType('');
+  //   setPriceRange('');
+  //   setBedrooms('');
+  // };
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30" id='properties'>
@@ -165,13 +165,13 @@ const FindYourHome = () => {
                     {filteredCities.map((city, index) => (
                       <button
                         key={index}
-                        onClick={() => handleCitySelect(city)}
+                        // onClick={() => handleCitySelect(city)}
                         className="w-full px-4 py-3 text-left hover:bg-orange-50 transition-colors flex items-center gap-3 border-b border-gray-100 last:border-0"
                       >
                         <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
                         <div>
-                          <div className="font-medium text-gray-900">{city.name}</div>
-                          <div className="text-xs text-gray-500">{city.state} State</div>
+                          <div className="font-medium text-gray-900">Anambra</div>
+                          <div className="text-xs text-gray-500">Anambra State</div>
                         </div>
                       </button>
                     ))}
@@ -220,7 +220,7 @@ const FindYourHome = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={handleSearch}
+                // onClick={handleSearch}
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <Search className="w-5 h-5" />
@@ -241,7 +241,7 @@ const FindYourHome = () => {
 
             {(searchQuery || propertyType || priceRange || bedrooms) && (
               <button
-                onClick={clearFilters}
+                // onClick={clearFilters}
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium"
               >
                 Clear All
@@ -299,10 +299,10 @@ const FindYourHome = () => {
               key={index}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                const cityObj = cities.find(c => c.name === city);
-                if (cityObj) handleCitySelect(cityObj);
-              }}
+              // onClick={() => {
+              //   const cityObj = cities.find(c => c.name === city);
+              //   if (cityObj) handleCitySelect(cityObj);
+              // }}
               className="px-4 py-2 bg-white hover:bg-orange-50 border border-gray-200 hover:border-orange-300 rounded-full text-sm text-gray-700 hover:text-orange-600 transition-all shadow-sm hover:shadow"
             >
               {city}
