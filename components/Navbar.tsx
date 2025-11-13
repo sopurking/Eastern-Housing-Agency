@@ -8,6 +8,34 @@ import SignUpModal from "./SignUpModal";
 import { logout } from "@/lib/actions/auth";
 
 const Navbar = ({session}:{session: any}) => {
+
+  //  useEffect(() => {
+  //    const storeData =async () => {
+  //   const { email, name }=await session.user;
+
+  //   const res = await fetch("/api/google", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+
+  //     body: JSON.stringify({ email, name}),
+  //   });
+
+  //   const data = await res.json();
+  //   console.log(data)
+
+  //   if (res.ok) {
+  //     alert(data);
+     
+  //   } else {
+  //     alert(data.error);
+  //   }
+  //    }
+  //     if(session?.user){
+  //       storeData();
+  //     }
+
+  // }, [session]); // 
+  // console.log("Navbar session:", session);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -74,7 +102,7 @@ const Navbar = ({session}:{session: any}) => {
           <div className="hidden lg:grid grid-cols-3 items-center h-20">
             {/* Logo */}
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3 cursor-pointer justify-self-start">
-              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto" />
+              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto rounded-full" />
               <span className={`${isScrolled ? "text-gray-900" : "text-white"} text-lg font-bold`}>
                 Eastern Housing
               </span>
@@ -188,7 +216,7 @@ const Navbar = ({session}:{session: any}) => {
                 {/* Mobile Menu Header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
-                    <img src="/logo.png" alt="Eastern Housing Logo" className="h-10 w-auto" />
+                    <img src="/logo.png" alt="Eastern Housing Logo" className="h-10 w-auto rounded-full" />
                     <span className="text-lg font-bold text-gray-900">Eastern Housing</span>
                   </div>
                   <button

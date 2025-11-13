@@ -4,7 +4,13 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google icon
 import { Eye, EyeOff } from "lucide-react";
 
-export default function SignInModal({ onClose }: { onClose: () => void }) {
+export default function SignInModal({
+  onClose,
+  onSwitch,
+}: {
+  onClose?: () => void;
+  onSwitch?: () => void;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -95,12 +101,13 @@ export default function SignInModal({ onClose }: { onClose: () => void }) {
         </button>
 
         {/* Footer */}
-        <p className="mt-5 text-center text-gray-500 text-sm">
+        <div className="mt-5 text-center text-gray-500 text-sm">
           Don’t have an account?{" "}
-          <a href="/auth/sign-up" className="text-orange-500 hover:underline">
+          <button className="text-orange-500 hover:underline"
+            onClick={onSwitch}>
             Sign Up
-          </a>
-        </p>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { Heart, MapPin, Bed, Bath, Square } from "lucide-react";
 import Pagination from "./Pagination";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import FindYourHome from "./FindYourHome";
 
 const PropertyListings = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -102,12 +103,14 @@ const PropertyListings = () => {
   const currentProperties = properties.slice(indexOfFirst, indexOfLast);
 
   return (
-    <div className="mt-16">
-      <h3 className="text-3xl font-bold mb-6 text-gray-900">
+    
+    <div className="mt-16 bg-gray-700">
+      <FindYourHome />
+      <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2">
         Featured Properties
       </h3>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {currentProperties.map((property) => (
           <Link href={`/properties/${property.id}`} key={property.id}>
             <motion.div
@@ -193,7 +196,7 @@ const PropertyListings = () => {
       <div className="text-center mt-8">
         <button
           onClick={() => router.push("/properties")}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold mb-3"
         >
           See More
         </button>

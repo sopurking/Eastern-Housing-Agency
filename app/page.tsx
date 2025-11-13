@@ -20,7 +20,6 @@ export default async function Home() {
       <HeroSection />
       <AboutUs />
       <HowItWorks />
-      <FindYourHome />
       <PropertyListings />
       <Services />
       <PrivacyPolicy  />
