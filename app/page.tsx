@@ -16,11 +16,10 @@ export default async function Home() {
   console.log(session);
   return (
     <>
-      <Navbar session={session}/>
+      <Navbar/>
       <HeroSection />
       <AboutUs />
       <HowItWorks />
-      <FindYourHome />
       <PropertyListings />
       <Services />
       <PrivacyPolicy  />

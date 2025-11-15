@@ -8,7 +8,14 @@ export const login = async () => {
 
 
 }
-
 export const logout = async () => {
-    await signOut();
-}
+  try {
+    // Call server endpoint to clear JWT cookie
+    await fetch("/api/logout", { method: "POST" });
+
+    // Redirect to home or refresh UI
+    window.location.href = "/";
+  } catch (err) {
+    console.error("Logout failed", err);
+  }
+};

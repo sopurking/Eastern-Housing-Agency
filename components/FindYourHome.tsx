@@ -89,7 +89,7 @@ const FindYourHome = () => {
   // };
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30" id='properties'>
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30 max-w-7xl" id='properties'>
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
@@ -103,12 +103,12 @@ const FindYourHome = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <span className="inline-block bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span className="inline-block bg-[#edf2f8] text-[#0d2549] px-4 py-2 rounded-full text-sm font-semibold mb-4">
             Find Properties
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Discover Your Dream Home in
-            <span className="text-orange-500"> Eastern Nigeria</span>
+            <span className="text-[#2da3dd]"> Eastern Nigeria</span>
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Search through thousands of properties across Abia, Anambra, Ebonyi, Enugu, and Imo states
@@ -138,7 +138,7 @@ const FindYourHome = () => {
                     setShowCityDropdown(true);
                   }}
                   onFocus={() => setShowCityDropdown(true)}
-                  className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none transition-colors text-gray-900 placeholder-gray-400"
+                  className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 placeholder-gray-400"
                 />
                 {searchQuery && (
                   <button
@@ -168,7 +168,7 @@ const FindYourHome = () => {
                         // onClick={() => handleCitySelect(city)}
                         className="w-full px-4 py-3 text-left hover:bg-orange-50 transition-colors flex items-center gap-3 border-b border-gray-100 last:border-0"
                       >
-                        <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <MapPin className="w-4 h-4 text-[#0d2549] flex-shrink-0" />
                         <div>
                           <div className="font-medium text-gray-900">Anambra</div>
                           <div className="text-xs text-gray-500">Anambra State</div>
@@ -186,7 +186,7 @@ const FindYourHome = () => {
               <select
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value)}
-                className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
+                className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
               >
                 <option value="">Property Type</option>
                 <option value="apartment">Apartment</option>
@@ -204,7 +204,7 @@ const FindYourHome = () => {
               <select
                 value={priceRange}
                 onChange={(e) => setPriceRange(e.target.value)}
-                className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
+                className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
               >
                 <option value="">Price Range</option>
                 <option value="0-50m">₦0 - ₦50M</option>
@@ -221,7 +221,7 @@ const FindYourHome = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 // onClick={handleSearch}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full bg-[#2da3dd] text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <Search className="w-5 h-5" />
                 <span>Search</span>
@@ -233,7 +233,7 @@ const FindYourHome = () => {
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors font-medium"
+              className="flex items-center gap-2 text-gray-600 hover:text-[#2da3dd] transition-colors font-medium"
             >
               <Filter className="w-4 h-4" />
               <span>{showFilters ? 'Hide' : 'Show'} Advanced Filters</span>
@@ -242,7 +242,7 @@ const FindYourHome = () => {
             {(searchQuery || propertyType || priceRange || bedrooms) && (
               <button
                 // onClick={clearFilters}
-                className="text-sm text-orange-500 hover:text-orange-600 font-medium"
+                className="text-sm text-[#2da3dd] hover:text-[#2da3dd] font-medium"
               >
                 Clear All
               </button>
@@ -266,7 +266,7 @@ const FindYourHome = () => {
                     <select
                       value={bedrooms}
                       onChange={(e) => setBedrooms(e.target.value)}
-                      className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
+                      className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
                     >
                       <option value="">Bedrooms</option>
                       <option value="1">1 Bedroom</option>
@@ -303,7 +303,7 @@ const FindYourHome = () => {
               //   const cityObj = cities.find(c => c.name === city);
               //   if (cityObj) handleCitySelect(cityObj);
               // }}
-              className="px-4 py-2 bg-white hover:bg-orange-50 border border-gray-200 hover:border-orange-300 rounded-full text-sm text-gray-700 hover:text-orange-600 transition-all shadow-sm hover:shadow"
+              className="px-4 py-2 bg-white hover:bg-orange-50 border border-gray-200 hover:border-[#2da3dd] rounded-full text-sm text-gray-700 hover:text-[#2da3dd] transition-all shadow-sm hover:shadow"
             >
               {city}
             </motion.button>
@@ -325,7 +325,7 @@ const FindYourHome = () => {
             { label: 'Expert Agents', value: '50+' }
           ].map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-orange-500 mb-1">{stat.value}</div>
+              <div className="text-2xl md:text-3xl font-bold text-[#2da3dd] mb-1">{stat.value}</div>
               <div className="text-sm text-gray-600">{stat.label}</div>
             </div>
           ))}

@@ -127,16 +127,16 @@ export default function PropertyDetailPage() {
           whileHover={{ scale: 1.02 }}
         />
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{property.title}</h1>
+          <h1 className="text-3xl font-bold text-gray-300 mb-2">{property.title}</h1>
           <p className="text-orange-500 text-xl font-semibold mb-3">
             {property.price}
           </p>
 
-          <div className="flex items-center gap-2 text-gray-500 mb-4">
+          <div className="flex items-center gap-2 text-gray-300 mb-4">
             <MapPin className="w-4 h-4" /> {property.location}
           </div>
 
-          <div className="flex gap-4 text-gray-600 text-sm mb-6">
+          <div className="flex gap-4 text-gray-300 text-sm mb-6">
             <span className="flex items-center gap-1">
               <Bed className="w-4 h-4" /> {property.beds}
             </span>
@@ -148,7 +148,7 @@ export default function PropertyDetailPage() {
             </span>
           </div>
 
-          <p className="text-gray-700 leading-relaxed mb-8">{property.description}</p>
+          <p className="text-gray-300 leading-relaxed mb-8">{property.description}</p>
 
           <div className="flex gap-4">
             <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">

@@ -4,11 +4,17 @@ import { login } from "@/lib/actions/auth";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import AuthModalManager from "./AuthModalManager";
 
-export default function SignUpModal({ onClose }: { onClose: () => void }) {
+export default function SignUpModal({
+  onClose,
+  onSwitch,
+}: {
+  onClose?: () => void;
+  onSwitch?: () => void;
+}) {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,20 +28,27 @@ export default function SignUpModal({ onClose }: { onClose: () => void }) {
       return;
     }
 
-  //   const res = await fetch("/api/auth/signup", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ email, firstName, lastName, password }),
-  //   });
+    // const res = await fetch("/api/auth/signup", {
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name:firstName, password }),
+    });
 
-  //   const data = await res.json();
+    const data = await res.json();
+    console.log(data)
 
-  //   if (res.ok) {
-  //     await signIn("credentials", { email, password, redirect: false });
-  //     onClose();
-  //   } else {
-  //     alert(data.error);
-  //   }
+    if (res.ok) {
+      alert("Account created successfully!");
+      setEmail("");
+      setFirstName("");
+      setPassword("");
+      setConfirmPassword("");
+      if(onClose) onClose();
+      window.location.reload();
+    } else {
+      alert(data.error);
+    }
   };
 
   return (
@@ -55,18 +68,10 @@ export default function SignUpModal({ onClose }: { onClose: () => void }) {
           <div className="flex gap-4">
             <input
               type="text"
-              placeholder="First Name"
+              placeholder="First and Last Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 placeholder-gray-400 transition"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-1/2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 placeholder-gray-400 transition"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 placeholder-gray-400 transition"
               required
             />
           </div>

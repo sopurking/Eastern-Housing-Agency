@@ -42,7 +42,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <span className="hidden sm:inline-block bg-orange-500/90 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 md:mb-6">
+            <span className="hidden sm:inline-block bg-[#0d2549] backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 md:mb-6">
               Trusted by 10,000+ Happy Homeowners
             </span>
             
@@ -61,7 +61,7 @@ const HeroSection = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-2xl transition"
+                className="bg-[#0d2549] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-2xl transition"
                 onClick={() => handleScroll("properties")}
               >
                 Browse Properties
@@ -73,7 +73,7 @@ const HeroSection = () => {
                 whileTap={{ scale: 0.95 }}
                 className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-2xl border border-white/20 transition"
               >
-                <Play className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
+                <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#0d2549]]" />
                 Watch Video
               </motion.button>
             </div>
@@ -87,7 +87,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 className="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/20 shadow-xl"
               >
-                <div className="text-2xl sm:text-3xl font-bold text-orange-400">2,500+</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#edf2f8]">2,500+</div>
                 <div className="text-gray-200 text-xs mt-1">Active Listings</div>
               </motion.div>
               
@@ -98,7 +98,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 className="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/20 shadow-xl"
               >
-                <div className="text-2xl sm:text-3xl font-bold text-orange-400">98%</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#edf2f8]">98%</div>
                 <div className="text-gray-200 text-xs mt-1">Satisfaction Rate</div>
               </motion.div>
 
@@ -109,7 +109,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 className="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/20 shadow-xl"
               >
-                <div className="text-2xl sm:text-3xl font-bold text-orange-400">15+</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#edf2f8]">15+</div>
                 <div className="text-gray-200 text-xs mt-1">Years Experience</div>
               </motion.div>
             </div>
@@ -124,8 +124,8 @@ const HeroSection = () => {
           className="hidden xl:block absolute top-32 right-20 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 max-w-xs"
         >
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center">
-              <Home className="w-7 h-7 text-orange-500" />
+            <div className="w-14 h-14 bg-[#0d2549] rounded-full flex items-center justify-center">
+              <Home className="w-7 h-7 text-[#edf2f8]" />
             </div>
             <div>
               <div className="text-sm text-gray-500">New Listing</div>
@@ -133,7 +133,7 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="text-sm text-gray-600 mb-3">Modern 4-bedroom villa with ocean view</div>
-          <div className="text-3xl font-bold text-orange-500">₦285,000</div>
+          <div className="text-3xl font-bold text-[#0d2549]">₦285,000</div>
         </motion.div>
 
         <motion.div

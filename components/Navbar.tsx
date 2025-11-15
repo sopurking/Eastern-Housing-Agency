@@ -7,14 +7,29 @@ import SignInModal from "./SignInModal";
 import SignUpModal from "./SignUpModal"; 
 import { logout } from "@/lib/actions/auth";
 
-const Navbar = ({session}:{session: any}) => {
+
+
+
+const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string } | null>(null);
 
   // States for modals
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
+  // Fetch logged-in user
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch("/api/me");
+      const data = await res.json();
+      if (data.user) setUser(data.user);
+    };
+    fetchUser();
+  }, []);
+
+  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -23,15 +38,9 @@ const Navbar = ({session}:{session: any}) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
-  
-
+  // Disable body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
   }, [isMobileMenuOpen]);
 
   const navLinks = [
@@ -56,7 +65,7 @@ const Navbar = ({session}:{session: any}) => {
           {/* Mobile Layout */}
           <div className="flex lg:hidden items-center justify-between h-20">
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center cursor-pointer">
-              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto" />
+              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto rounded-full" />
             </motion.div>
 
             <motion.button
@@ -74,7 +83,7 @@ const Navbar = ({session}:{session: any}) => {
           <div className="hidden lg:grid grid-cols-3 items-center h-20">
             {/* Logo */}
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3 cursor-pointer justify-self-start">
-              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto" />
+              <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto rounded-full" />
               <span className={`${isScrolled ? "text-gray-900" : "text-white"} text-lg font-bold`}>
                 Eastern Housing
               </span>
@@ -90,13 +99,13 @@ const Navbar = ({session}:{session: any}) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className={`font-medium transition-colors relative group ${
-                    isScrolled ? "text-gray-700 hover:text-orange-500" : "text-white hover:text-orange-400"
+                    isScrolled ? "text-gray-700 hover:text-[#0d2549]" : "text-white hover:text-[#0d2549]"
                   }`}
                 >
                   {link.name}
                   <span
                     className={`absolute bottom-0 left-0 w-full h-0 transition-all duration-300 group-hover:h-0.5 ${
-                      isScrolled ? "bg-orange-500" : "bg-orange-400"
+                      isScrolled ? "bg-[#0d2549]" : "bg-[#0d2549]"
                     }`}
                   ></span>
                 </motion.a>
@@ -104,49 +113,42 @@ const Navbar = ({session}:{session: any}) => {
             </div>
 
             {/* Desktop CTA Buttons */}
-          {/* Desktop CTA Buttons */}
-<div className="hidden lg:flex items-center gap-4 justify-self-end">
-  {session?.user ? (
-    <>
-      <span
-        className={`font-medium ${
-          isScrolled ? "text-gray-700" : "text-white"
-        }`}
-      >
-        Hi, {session.user.name?.split(" ")[0] || "User"}
-      </span>
-      <button
-        onClick={() => logout()}
-        className="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
-      >
-        Sign Out
-      </button>
-    </>
-  ) : (
-    <>
-      <motion.button
-        onClick={() => setShowSignInModal(true)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
-          isScrolled
-            ? "text-gray-700 hover:bg-gray-100"
-            : "text-white hover:bg-white/10"
-        }`}
-      >
-        Sign In
-      </motion.button>
-      <motion.button
-        onClick={() => setShowSignUpModal(true)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-lg transition-all"
-      >
-        Get Started
-      </motion.button>
-    </>
-  )}
-</div>
+            <div className="hidden lg:flex items-center gap-4 justify-self-end">
+              {user ? (
+                <>
+                  <span className={`font-medium ${isScrolled ? "text-gray-700" : "text-white"}`}>
+                    Hi, {user.name.split(" ")[0]}
+                  </span>
+                  <button
+                    onClick={() => logout()}
+                    className="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <motion.button
+                    onClick={() => setShowSignInModal(true)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
+                      isScrolled ? "text-gray-700 hover:bg-gray-100" : "text-white hover:bg-white/10"
+                    }`}
+                  >
+                    Sign In
+                  </motion.button>
+                  <motion.button
+                    onClick={() => setShowSignUpModal(true)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-[#0d2549] text-white px-6 py-2.5 rounded-lg font-medium shadow-lg transition-all"
+                  >
+                    Get Started
+                  </motion.button>
+                </>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <motion.button
@@ -188,7 +190,7 @@ const Navbar = ({session}:{session: any}) => {
                 {/* Mobile Menu Header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
-                    <img src="/logo.png" alt="Eastern Housing Logo" className="h-10 w-auto" />
+                    <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-10 w-auto rounded-full" />
                     <span className="text-lg font-bold text-gray-900">Eastern Housing</span>
                   </div>
                   <button
@@ -209,7 +211,7 @@ const Navbar = ({session}:{session: any}) => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-4 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-500 rounded-lg font-medium transition-colors"
+                      className="block px-4 py-3 text-gray-700 hover:bg-gray-200 hover:text-[#0d2549] rounded-lg font-medium transition-colors"
                     >
                       {link.name}
                     </motion.a>
@@ -219,11 +221,11 @@ const Navbar = ({session}:{session: any}) => {
                 {/* Mobile Contact Info */}
                 <div className="space-y-3 mb-8 px-4">
                   <div className="flex items-center gap-3 text-gray-600">
-                    <Phone className="w-5 h-5 text-orange-500" />
+                    <Phone className="w-5 h-5 text-[#0d2549]" />
                     <span className="text-sm">+234 (0) 123 456 7890</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
-                    <Mail className="w-5 h-5 text-orange-500" />
+                    <Mail className="w-5 h-5 text-[#0d2549]" />
                     <span className="text-sm">info@dreamhome.com</span>
                   </div>
                 </div>
@@ -237,7 +239,7 @@ const Navbar = ({session}:{session: any}) => {
                     Sign In
                   </button>
                   <button
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all"
+                    className="w-full bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all"
                     onClick={() => setShowSignUpModal(true)}
                   >
                     Get Started

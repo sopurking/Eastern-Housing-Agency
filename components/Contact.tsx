@@ -24,11 +24,11 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <span className="inline-block bg-orange-500/20 text-orange-400 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span className="inline-block bg-orange-500/20 text-[#2da3dd] px-4 py-2 rounded-full text-sm font-semibold mb-4">
             Get In Touch
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
-            Let’s <span className="text-orange-400">Connect</span> With You
+            Let’s <span className="text-[#2da3dd]">Connect</span> With You
           </h2>
           <p className="text-gray-300 mt-4 max-w-xl mx-auto">
             Reach out through any of the platforms below — we’d love to help
@@ -49,13 +49,13 @@ const Contact = () => {
               href="tel:+2348057766616"
               className="bg-white/10 p-4 rounded-2xl mb-4 flex items-center justify-center"
             >
-              <Phone className="w-6 h-6 text-orange-400" />
+              <Phone className="w-6 h-6 text-[#2da3dd]" />
             </a>
             <h3 className="font-semibold text-lg mb-1">Call Us</h3>
             <p className="text-gray-400">+234 805 776 6616</p>
             <a
               href="tel:+2348057766616"
-              className="mt-3 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold text-sm transition"
+              className="mt-3 bg-[#2da3dd] hover:bg-[#154760] text-white px-6 py-2 rounded-lg font-semibold text-sm transition"
             >
               Call Now
             </a>
@@ -72,13 +72,13 @@ const Contact = () => {
               href="mailto:easternhousingagency@gmail.com"
               className="bg-white/10 p-4 rounded-2xl mb-4 flex items-center justify-center"
             >
-              <Mail className="w-6 h-6 text-orange-400" />
+              <Mail className="w-6 h-6 text-[#2da3dd]" />
             </a>
             <h3 className="font-semibold text-lg mb-1">Email Us</h3>
             <p className="text-gray-400">easternhousingagency@gmail.com</p>
             <a
               href="mailto:easternhousingagency@gmail.com"
-              className="mt-3 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold text-sm transition"
+              className="mt-3 bg-[#2da3dd] hover:bg-[#154760] text-white px-6 py-2 rounded-lg font-semibold text-sm transition"
             >
               Send Email
             </a>
@@ -92,7 +92,7 @@ const Contact = () => {
             className="flex flex-col items-center md:items-start text-center md:text-left"
           >
             <div className="bg-white/10 p-4 rounded-2xl mb-4">
-              <MapPin className="w-6 h-6 text-orange-400" />
+              <MapPin className="w-6 h-6 text-[#2da3dd]" />
             </div>
             <h3 className="font-semibold text-lg mb-1">Office Address</h3>
             <p className="text-gray-400">‎📍 Office: 79 Transaerodrome Emene Enugu State</p>
@@ -113,7 +113,7 @@ const Contact = () => {
                 key={i}
                 href={social.link}
                 whileHover={{ scale: 1.15 }}
-                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-orange-400 hover:bg-orange-500 hover:text-white transition"
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-[#2da3dd] hover:bg-[#154760] hover:text-white transition"
               >
                 {social.icon}
               </motion.a>
@@ -129,7 +129,7 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.45 }}
             className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 text-center md:text-left mt-14 max-w-3xl mx-auto"
           >
-            <h3 className="text-xl font-semibold text-orange-400 mb-2">Business Hours & Registration</h3>
+            <h3 className="text-xl font-semibold text-[#2da3dd] mb-2">Business Hours & Registration</h3>
             <p className="text-gray-300 mb-1">Mon–Sat, 8 AM – 5:30 PM</p>
             <p className="text-gray-400 text-sm">(24/7 WhatsApp & Email Support Available)</p>
             <p className="text-gray-400 text-sm mt-2">

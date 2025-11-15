@@ -48,9 +48,9 @@ const AboutUs = () => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:bg-orange-500 transition-all duration-300"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:bg-[#0d2549] transition-all duration-300"
               >
-                <Play className="w-7 h-7 md:w-9 md:h-9 text-orange-500 group-hover:text-white ml-1 transition-colors duration-300" fill="currentColor" />
+                <Play className="w-7 h-7 md:w-9 md:h-9 text-[#0d2549] group-hover:text-white ml-1 transition-colors duration-300" fill="currentColor" />
               </motion.button>
               
               {/* Video Label */}
@@ -68,13 +68,13 @@ const AboutUs = () => {
             transition={{ duration: 0.6 }}
             className="lg:pl-8 flex flex-col justify-center max-sm:items-center max-sm:text-center"
           >
-            <span className="inline-block bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-4 md:mb-6 w-fit">
+            <span className="inline-block bg-[#0d2549] text-[#edf2f8] px-4 py-2 rounded-full text-sm font-semibold mb-4 md:mb-6 w-fit">
               About Us
             </span>
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
               Building Trust, Creating
-              <span className="text-orange-500"> Dream Homes</span>
+              <span className="text-[#2da3dd]"> Dream Homes</span>
             </h2>
             
             <p className="text-base md:text-md text-gray-600 mb-5 md:mb-6 leading-relaxed">
@@ -94,7 +94,7 @@ const AboutUs = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-fit max-sm:w-full"
+              className="bg-[#2da3dd] hover:bg-[#2da3dd] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-fit max-sm:w-full"
               onClick={()=>handleScroll("properties")}
             >
               Find Your Home
