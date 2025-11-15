@@ -1,42 +1,35 @@
-// app/api/users/route.ts (Next.js App Router)
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs"; // for password hashing
-import test from "node:test";
+import bcrypt from "bcryptjs";
+import { signJwt } from "@/lib/jwt";
+import { serialize } from "cookie";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { email, name,password }=await req.json();
-    console.log(email, name,password)
+    const { email, name, password } = await req.json();
 
-    // Check if user already exists
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    // Check if user exists
+    let user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(password, 8);
+      user = await prisma.user.create({
+        data: { email, name, password: hashedPassword },
+      });
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 8);
-    // interface test{
-    //   data:{
-    //     email:string;
-    //     name:string;
-    //     password:string;
-    //   }
-    // }
+    // Create JWT
+    const token = signJwt({ id: user.id, email: user.email });
 
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name,
-        password: hashedPassword,
-      },
+    // Set cookie
+    const cookie = serialize("token", token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60, // 7 days
     });
 
-    return NextResponse.json({ user }, { status: 201 });
-  } catch (error) {
-    console.error(error);
+    return NextResponse.json({ user }, { status: 200, headers: { "Set-Cookie": cookie } });
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }

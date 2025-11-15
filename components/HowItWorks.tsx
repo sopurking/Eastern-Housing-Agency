@@ -48,7 +48,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br bg-gray-100">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br bg-gray-100 max-w-7xl">
       {/* Decorative Elements */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl"></div>
@@ -62,12 +62,12 @@ const HowItWorks = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <span className="inline-block bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span className="inline-block bg-[#0d2549] text-[#edf2f8] px-4 py-2 rounded-full text-sm font-semibold mb-4">
             How It Works
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
             Your Journey to a New Home in
-            <span className="text-orange-500"> 4 Simple Steps</span>
+            <span className="text-[#0d2549]"> 4 Simple Steps</span>
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             We've streamlined the home-finding process to make it easy, transparent, and stress-free for you.
@@ -98,7 +98,7 @@ const HowItWorks = () => {
                   className="relative bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full"
                 >
                   {/* Step Number */}
-                  <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#0d2549] to-[#2da3dd] rounded-full flex items-center justify-center shadow-lg">
                     <span className="text-white font-bold text-sm">{step.step}</span>
                   </div>
 
@@ -134,7 +134,7 @@ const HowItWorks = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-[#2da3dd] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
             onClick={() => handleScroll("properties")}
           >
             Get Started Today

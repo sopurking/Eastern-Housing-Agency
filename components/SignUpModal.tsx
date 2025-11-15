@@ -45,6 +45,7 @@ export default function SignUpModal({
       setPassword("");
       setConfirmPassword("");
       if(onClose) onClose();
+      window.location.reload();
     } else {
       alert(data.error);
     }

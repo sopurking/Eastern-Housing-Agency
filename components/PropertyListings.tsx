@@ -104,13 +104,13 @@ const PropertyListings = () => {
 
   return (
     
-    <div className="mt-16 bg-gray-700">
+    <div className="mt-16 bg-gray-700 max-w-7xl">
       <FindYourHome />
       <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2">
         Featured Properties
       </h3>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-[20px] ">
         {currentProperties.map((property) => (
           <Link href={`/properties/${property.id}`} key={property.id}>
             <motion.div
@@ -135,7 +135,7 @@ const PropertyListings = () => {
                   <Heart
                     className={`w-5 h-5 ${
                       favorites.has(property.id)
-                        ? "text-red-500 fill-red-500"
+                        ? "text-[#0d2549] fill-[#0d2549]"
                         : "text-gray-600"
                     }`}
                   />
@@ -143,7 +143,7 @@ const PropertyListings = () => {
               </div>
 
               <div className="p-5">
-                <div className="text-2xl font-bold text-orange-500 mb-2">
+                <div className="text-2xl font-bold text-[#2da3dd] mb-2">
                   {property.price}
                 </div>
                 <h4 className="text-lg font-semibold text-gray-900 mb-1">
@@ -168,13 +168,13 @@ const PropertyListings = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={(e) => e.preventDefault()}
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-lg font-semibold text-sm"
+                    className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
                     Book Inspection
                   </button>
                   <button
                     onClick={(e) => e.preventDefault()}
-                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-lg font-semibold text-sm"
+                    className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
                     Contact
                   </button>
@@ -196,7 +196,7 @@ const PropertyListings = () => {
       <div className="text-center mt-8">
         <button
           onClick={() => router.push("/properties")}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-semibold mb-3"
+          className="bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-md font-semibold mb-3"
         >
           See More
         </button>
