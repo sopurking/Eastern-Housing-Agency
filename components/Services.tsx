@@ -34,7 +34,7 @@ const services = [
 
 const Services = () => {
   return (
-    <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden max-w-7xl" id="services">
+    <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden" id="services">
       {/* Decorative Blurs */}
       <div className="absolute top-20 left-0 w-80 h-80 bg-orange-100/40 blur-3xl rounded-full"></div>
       <div className="absolute bottom-20 right-0 w-80 h-80 bg-orange-50/50 blur-3xl rounded-full"></div>
