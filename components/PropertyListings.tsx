@@ -104,16 +104,9 @@ const PropertyListings = () => {
   const currentProperties = properties.slice(indexOfFirst, indexOfLast);
 
   return (
-<<<<<<< HEAD
-    
-    <div className="mt-16 bg-gray-800 max-w-7xl">
-      <FindYourHome />
-      <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2 mt-4">
-=======
     <div className="bg-gray-700">
       <FindYourHome />
       <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-20">
->>>>>>> master
         Featured Properties
       </h3>
       <div className="grid pb-20 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1300px] mx-auto">
