@@ -30,7 +30,7 @@ export default function AllPropertiesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6 md:px-16">
-      <h1 className="text-4xl font-bold text-orange-600 text-center mb-10">
+      <h1 className="text-4xl font-bold text-[#0d2549] text-center mb-10">
         Explore All Properties
       </h1>
 
@@ -57,14 +57,23 @@ export default function AllPropertiesPage() {
                 <p className="text-sm text-gray-500 mt-1">{property.location}</p>
               </div>
 
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-orange-600 font-bold">{property.price}</span>
+              <div className="mt-3 flex items-center justify-between mb-2">
+                <span className="text-[#2da3dd] font-bold">{property.price}</span>
+
+              </div>
+
+              <div>
+                <button
+                  className="bg-[#2da3dd] hover:bg-[#2da3dd] text-white text-sm px-4 py-2 rounded-lg transition mr-3"
+                >
+                  Book Inspection
+                </button>
 
                 <Link
                   href={`/properties/${property.id}`}
-                  className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-full transition"
+                  className="bg-[#2da3dd] hover:bg-[#2da3dd] text-white text-sm px-4 py-2 rounded-lg transition"
                 >
-                  See Details
+                  Explore
                 </Link>
               </div>
             </div>

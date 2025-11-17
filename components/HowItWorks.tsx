@@ -48,10 +48,10 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br bg-gray-100 max-w-7xl">
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br max-w-7xl bg-[#040607]">
       {/* Decorative Elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl"></div>
+      {/* <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl"></div> */}
       
       <div className="max-w-[1300px] mx-auto px-6 relative z-10">
         {/* Section Header */}
@@ -65,11 +65,11 @@ const HowItWorks = () => {
           <span className="inline-block bg-[#0d2549] text-[#edf2f8] px-4 py-2 rounded-full text-sm font-semibold mb-4">
             How It Works
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-200 mb-4 md:mb-6">
             Your Journey to a New Home in
-            <span className="text-[#0d2549]"> 4 Simple Steps</span>
+            <span className="text-[#1e55a7]"> 4 Simple Steps</span>
           </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
             We've streamlined the home-finding process to make it easy, transparent, and stress-free for you.
           </p>
         </motion.div>
@@ -128,7 +128,7 @@ const HowItWorks = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12 md:mt-16"
         >
-          <p className="text-base md:text-lg text-gray-600 mb-6">
+          <p className="text-base md:text-lg text-gray-400 mb-6">
             Ready to start your home-finding journey?
           </p>
           <motion.button

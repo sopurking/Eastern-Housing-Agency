@@ -104,9 +104,9 @@ const PropertyListings = () => {
 
   return (
     
-    <div className="mt-16 bg-gray-700 max-w-7xl">
+    <div className="mt-16 bg-gray-800 max-w-7xl">
       <FindYourHome />
-      <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2">
+      <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2 mt-4">
         Featured Properties
       </h3>
 
@@ -176,7 +176,7 @@ const PropertyListings = () => {
                     onClick={(e) => e.preventDefault()}
                     className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
-                    Contact
+                    Explore
                   </button>
                 </div>
               </div>

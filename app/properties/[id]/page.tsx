@@ -4,6 +4,10 @@ import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, MapPin, Bed, Bath, Square } from "lucide-react";
 
+
+
+const EstateV = "/videos/EstateV.mp4";
+
 const properties = [
   {
     id: 1,
@@ -17,7 +21,7 @@ const properties = [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
       "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800",
     ],
-    videos: ["https://www.youtube.com/embed/dQw4w9WgXcQ"],
+    videos: [EstateV],
     description:
       "A stunning modern duplex located in the heart of Enugu. This home features luxurious amenities, spacious rooms, and a serene environment perfect for family living.",
   },
@@ -33,7 +37,7 @@ const properties = [
       "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800",
       "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800",
     ],
-    videos: ["https://www.youtube.com/embed/tgbNymZ7vqY"],
+    videos: [EstateV],
     description:
       "A contemporary 3-bedroom apartment offering modern finishes and excellent amenities in a prime location in Owerri.",
   },
@@ -49,7 +53,7 @@ const properties = [
       "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800",
       "https://images.unsplash.com/photo-1599423300746-b62533397364?w=800",
     ],
-    videos: [],
+    videos: [EstateV],
     description:
       "A charming 2-bedroom bungalow perfect for small families or couples, with a warm and inviting atmosphere in New Haven.",
   },
@@ -65,7 +69,7 @@ const properties = [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
       "https://images.unsplash.com/photo-1600596541446-9619e3fce8b9?w=800",
     ],
-    videos: [],
+    videos: [EstateV],
     description:
       "An exquisite 5-bedroom mansion in Abuja with expansive living spaces, high-end finishes, and stunning architecture.",
   },
@@ -81,7 +85,7 @@ const properties = [
       "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800",
       "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800",
     ],
-    videos: [],
+    videos: [EstateV],
     description:
       "A modern 2-bedroom flat in Lekki with a sleek design, open-plan living, and top-notch amenities for comfortable urban living.",
   },
@@ -97,11 +101,14 @@ const properties = [
       "https://images.unsplash.com/photo-1600596541446-9619e3fce8b9?w=800",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
     ],
-    videos: [],
+    videos: [EstateV],
     description:
       "A beautiful 3-bedroom villa in Port Harcourt, featuring spacious interiors, landscaped gardens, and a relaxing ambiance.",
   },
 ];
+
+
+
 
 export default function PropertyDetailPage() {
   const params = useParams();
@@ -114,7 +121,7 @@ export default function PropertyDetailPage() {
     <div className="max-w-5xl mx-auto p-6 mt-10">
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-orange-500 font-semibold mb-6"
+        className="flex items-center gap-2 text-[#2da3dd] font-semibold mb-6"
       >
         <ArrowLeft className="w-4 h-4" /> Back
       </button>
@@ -128,7 +135,7 @@ export default function PropertyDetailPage() {
         />
         <div>
           <h1 className="text-3xl font-bold text-gray-300 mb-2">{property.title}</h1>
-          <p className="text-orange-500 text-xl font-semibold mb-3">
+          <p className="text-[#2da3dd] text-xl font-semibold mb-3">
             {property.price}
           </p>
 
@@ -151,11 +158,11 @@ export default function PropertyDetailPage() {
           <p className="text-gray-300 leading-relaxed mb-8">{property.description}</p>
 
           <div className="flex gap-4">
-            <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">
+            <button className="flex-1 bg-[#2da3dd] hover:bg-[#1b7bb8] text-white py-3 rounded-lg font-semibold">
               Book Inspection
             </button>
-            <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">
-              Contact Agent
+            <button className="flex-1 bg-[#2da3dd] hover:bg-[#1b7bb8] text-white py-3 rounded-lg font-semibold">
+              Contact Field Operative
             </button>
           </div>
         </div>
