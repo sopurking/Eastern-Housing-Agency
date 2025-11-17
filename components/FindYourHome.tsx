@@ -89,7 +89,7 @@ const FindYourHome = () => {
   // };
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30 max-w-7xl" id='properties'>
+    <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30" id='properties'>
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>

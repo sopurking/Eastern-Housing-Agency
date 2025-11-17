@@ -48,7 +48,7 @@ const HeroSection = () => {
             
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight">
               Find Your Perfect
-              <span className="font-playfair text-orange-400"> Home</span> with Ease
+              <span className="font-playfair text-white"> Home</span> with Ease
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 md:mb-8 leading-relaxed max-w-2xl">

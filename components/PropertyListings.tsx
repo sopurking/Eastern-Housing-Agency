@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Heart, MapPin, Bed, Bath, Square } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, MapPin, Bed, Bath, Square, X, Calendar, CreditCard } from "lucide-react";
 import Pagination from "./Pagination";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import FindYourHome from "./FindYourHome";
 const PropertyListings = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const router = useRouter();
 
   const propertiesPerPage = 3;
@@ -103,14 +104,19 @@ const PropertyListings = () => {
   const currentProperties = properties.slice(indexOfFirst, indexOfLast);
 
   return (
+<<<<<<< HEAD
     
     <div className="mt-16 bg-gray-800 max-w-7xl">
       <FindYourHome />
       <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-2 mt-4">
+=======
+    <div className="bg-gray-700">
+      <FindYourHome />
+      <h3 className="text-3xl font-bold mb-6 text-gray-300 flex justify-center align-items: center pt-20">
+>>>>>>> master
         Featured Properties
       </h3>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mx-[20px] ">
+      <div className="grid pb-20 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1300px] mx-auto">
         {currentProperties.map((property) => (
           <Link href={`/properties/${property.id}`} key={property.id}>
             <motion.div
@@ -123,11 +129,10 @@ const PropertyListings = () => {
                   alt={property.title}
                   className="w-full h-full object-cover"
                 />
-
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent navigating when liking
+                    e.preventDefault();
                     toggleFavorite(property.id);
                   }}
                   className="absolute top-3 right-3 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg"
@@ -167,7 +172,10 @@ const PropertyListings = () => {
 
                 <div className="flex gap-3">
                   <button
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedProperty(property);
+                    }}
                     className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
                     Book Inspection
@@ -185,15 +193,113 @@ const PropertyListings = () => {
         ))}
       </div>
 
-      {/* Pagination */}
+      <AnimatePresence>
+        {selectedProperty && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedProperty(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                <img
+                  src={selectedProperty.images[0]}
+                  alt={selectedProperty.title}
+                  className="w-full h-64 object-cover rounded-t-2xl"
+                />
+                <button
+                  onClick={() => setSelectedProperty(null)}
+                  className="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg hover:bg-white"
+                >
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+
+              <div className="p-6">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    {selectedProperty.title}
+                  </h2>
+                  <div className="flex items-center gap-2 text-gray-500 mb-3">
+                    <MapPin className="w-4 h-4" />
+                    {selectedProperty.location}
+                  </div>
+                  <div className="text-3xl font-bold text-[#2da3dd] mb-4">
+                    {selectedProperty.price}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+                  <div className="text-center">
+                    <Bed className="w-6 h-6 mx-auto mb-2 text-[#2da3dd]" />
+                    <div className="font-semibold">{selectedProperty.beds}</div>
+                    <div className="text-sm text-gray-500">Bedrooms</div>
+                  </div>
+                  <div className="text-center">
+                    <Bath className="w-6 h-6 mx-auto mb-2 text-[#2da3dd]" />
+                    <div className="font-semibold">{selectedProperty.baths}</div>
+                    <div className="text-sm text-gray-500">Bathrooms</div>
+                  </div>
+                  <div className="text-center">
+                    <Square className="w-6 h-6 mx-auto mb-2 text-[#2da3dd]" />
+                    <div className="font-semibold">{selectedProperty.sqft}</div>
+                    <div className="text-sm text-gray-500">Sq Ft</div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calendar className="w-5 h-5 text-blue-600" />
+                    <h3 className="font-semibold text-blue-900">Property Inspection</h3>
+                  </div>
+                  <p className="text-blue-800 text-sm mb-3">
+                    Schedule a professional inspection to view this property in person. 
+                    Our team will guide you through all features and answer your questions.
+                  </p>
+                  <div className="text-sm text-blue-700">
+                    <strong>Inspection Fee:</strong> ₦5,000 (Refundable upon purchase)
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      alert('Redirecting to payment...');
+                    }}
+                    className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <CreditCard className="w-5 h-5" />
+                    Pay Inspection Fee
+                  </button>
+                  <button
+                    onClick={() => setSelectedProperty(null)}
+                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Pagination
         total={Math.ceil(properties.length / propertiesPerPage)}
         current={currentPage}
         onPageChange={setCurrentPage}
       />
 
-      {/* See More */}
-      <div className="text-center mt-8">
+      <div className="text-center mt-8 pb-20">
         <button
           onClick={() => router.push("/properties")}
           className="bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-md font-semibold mb-3"
