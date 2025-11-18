@@ -35,7 +35,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"></div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-[1300px] mx-auto px-6 min-h-screen flex items-center pt-24 pb-20 md:pt-20 md:pb-16 md:items-center md:justify-center md:text-center">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-6 min-h-screen flex items-center pt-24 pb-20 md:pt-20 md:pb-16 md:items-center md:justify-center text-center">
         <div className="max-w-3xl w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
