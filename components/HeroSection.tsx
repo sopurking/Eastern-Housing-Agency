@@ -46,10 +46,14 @@ const HeroSection = () => {
               Trusted by 10,000+ Happy Homeowners
             </span>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight">
-              Find Your Perfect
-              <span className="font-playfair text-white"> Home</span> with Ease
-            </h1>
+           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6">
+  Find Your Perfect{" "}
+  <span className="bg-[#0d2549] px-5 py-2 rounded-xl inline-block">
+    Home
+  </span>{" "}
+  with Ease
+</h1>
+
             
             <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 md:mb-8 leading-relaxed max-w-2xl">
               Where honesty meets exceptional service. Discover properties that match your dreams, 
