@@ -35,7 +35,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"></div>
 
       {/* Content */}
-      <div className="relative max-sm:text-center z-10 max-w-[1300px] mx-auto px-6 min-h-screen flex items-center pt-24 pb-20 md:pt-20 md:pb-16">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-6 min-h-screen flex items-center pt-24 pb-20 md:pt-20 md:pb-16 md:items-center md:justify-center md:text-center">
         <div className="max-w-3xl w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -57,7 +57,7 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 md:mb-10">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 md:mb-10 xl:items-center justify-center">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -79,7 +79,7 @@ const HeroSection = () => {
             </div>
 
             {/* Stats */}
-            <div className="hidden sm:grid grid-cols-3 gap-3 sm:gap-4 max-w-xl">
+            <div className="hidden sm:grid grid-cols-3 gap-3 sm:gap-4 max-w-xl mx-auto place-content-center">
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -115,45 +115,6 @@ const HeroSection = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Floating Info Cards */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="hidden xl:block absolute top-32 right-20 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-6 max-w-xs"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-14 h-14 bg-[#0d2549] rounded-full flex items-center justify-center">
-              <Home className="w-7 h-7 text-[#edf2f8]" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-500">New Listing</div>
-              <div className="font-bold text-gray-900 text-lg">Luxury Villa</div>
-            </div>
-          </div>
-          <div className="text-sm text-gray-600 mb-3">Modern 4-bedroom villa with ocean view</div>
-          <div className="text-3xl font-bold text-[#0d2549]">₦285,000</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-          className="hidden xl:block absolute bottom-32 right-32 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-5"
-        >
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop" 
-              alt="Agent"
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div>
-              <div className="font-semibold text-gray-900">Elon Swaghat</div>
-              <div className="text-xs text-gray-500">Top Rated Agent</div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Scroll Indicator */}

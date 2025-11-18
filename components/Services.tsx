@@ -36,8 +36,8 @@ const Services = () => {
   return (
     <section className="relative bg-gray-50 py-20 md:py-28 overflow-hidden" id="services">
       {/* Decorative Blurs */}
-      <div className="absolute top-20 left-0 w-80 h-80 bg-orange-100/40 blur-3xl rounded-full"></div>
-      <div className="absolute bottom-20 right-0 w-80 h-80 bg-orange-50/50 blur-3xl rounded-full"></div>
+      <div className="absolute top-20 left-0 w-80 h-80 bg-orange-100/40 blur-3xl rounded-full hidden sm:block"></div>
+      <div className="absolute bottom-20 right-0 w-80 h-80 bg-orange-50/50 blur-3xl rounded-full hidden sm:block"></div>
 
       <div className="max-w-[1300px] mx-auto px-6 relative z-10">
         <div className="text-center mb-14">
@@ -71,15 +71,15 @@ const Services = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-white shadow-lg hover:shadow-2xl rounded-2xl p-8 border border-gray-100 transition-all duration-300"
+              className="bg-white shadow-lg hover:shadow-2xl rounded-2xl p-8 border border-gray-100 transition-all duration-300 flex flex-col"
             >
-              <div className="w-16 h-16 bg-gray-200 rounded-2xl flex items-center justify-center mb-6 ">
+              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-gray-200">
                 {service.icon}
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900 tracking-tight">
                 {service.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">{service.desc}</p>
+              <p className="text-gray-600 leading-relaxed flex-1">{service.desc}</p>
             </motion.div>
           ))}
         </div>

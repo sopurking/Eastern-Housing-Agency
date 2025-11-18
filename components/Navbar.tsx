@@ -64,8 +64,11 @@ const Navbar = () => {
         <div className="max-w-[1300px] mx-auto px-6">
           {/* Mobile Layout */}
           <div className="flex lg:hidden items-center justify-between h-20">
-            <motion.div whileHover={{ scale: 1.05 }} className="flex items-center cursor-pointer">
+            <motion.div whileHover={{ scale: 1.05 }} className="flex gap-3 items-center cursor-pointer">
               <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto rounded-full" />
+              <span className={`${isScrolled ? "text-gray-900" : "text-white"} text-lg font-bold`}>
+                Eastern Housing Agency
+              </span>
             </motion.div>
 
             <motion.button
@@ -85,7 +88,7 @@ const Navbar = () => {
             <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3 cursor-pointer justify-self-start">
               <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-12 w-auto rounded-full" />
               <span className={`${isScrolled ? "text-gray-900" : "text-white"} text-lg font-bold`}>
-                Eastern Housing
+                Eastern Housing Agency
               </span>
             </motion.div>
 
@@ -191,7 +194,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
                     <img src="/logo1.jpg" alt="Eastern Housing Logo" className="h-10 w-auto rounded-full" />
-                    <span className="text-lg font-bold text-gray-900">Eastern Housing</span>
+                    <span className="text-lg font-bold text-gray-900">Eastern Housing Agency</span>
                   </div>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}

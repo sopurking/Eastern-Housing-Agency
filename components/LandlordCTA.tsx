@@ -22,27 +22,29 @@ const handleListProperties = () => {
     return (
         // Component container with a light background and padding
         <div className="py-16 bg-gray-50 border-t border-b border-gray-200">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-[1300px] mx-auto px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true, amount: 0.5 }}
-                    className={`p-8 md:p-12 rounded-xl text-center shadow-2xl`}
+                    className={`p-8 md:p-12 rounded-3xl text-center shadow-2xl ring-1 ring-white/10 relative overflow-hidden`}
                     style={{ 
-                        backgroundColor: PRIMARY_COLOR, // Dark blue background
+                        backgroundColor: PRIMARY_COLOR,
                         backgroundImage: `linear-gradient(135deg, ${PRIMARY_COLOR} 0%, #1a3c63 100%)` 
                     }}
                 >
-                    <Home className="w-10 h-10 text-white mx-auto mb-4" />
+                    <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/5 blur-3xl rounded-full pointer-events-none" />
+                    <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#2da3dd]/10 blur-3xl rounded-full pointer-events-none" />
+                    <Home className="w-12 h-12 text-white mx-auto mb-5" />
                     
                     {/* Main Headline */}
-                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3 tracking-tight">
                         Are you a Landlord? Lease your house
                     </h2>
                     
-                    {/* Supporting Text (Optional) */}
-                    <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                    {/* Supporting Text */}
+                    <p className="text-gray-200 mb-8 max-w-2xl mx-auto">
                         Connect with reliable renters quickly and transparently through Eastern Housing Agency.
                     </p>
 
@@ -51,10 +53,7 @@ const handleListProperties = () => {
                         onClick={handleListProperties}
                         whileHover={{ scale: 1.05, boxShadow: '0 8px 15px rgba(45, 163, 221, 0.5)' }}
                         whileTap={{ scale: 0.95 }}
-                        className={`inline-flex items-center justify-center 
-                                    bg-[${SECONDARY_COLOR}] text-white 
-                                    px-8 py-3 rounded-lg font-semibold 
-                                    shadow-lg transition-all duration-300 hover:brightness-110`}
+                        className={`inline-flex items-center justify-center bg-[#2da3dd] text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:bg-[#278fbe] focus-visible:ring-2 focus-visible:ring-white/60`}
                     >
                         <Key className="w-5 h-5 mr-2" />
                         Lease Properties

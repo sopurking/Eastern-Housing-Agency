@@ -22,11 +22,9 @@ export default async function Home() {
       <Navbar/>
       <HeroSection />
       <AboutUs />
-      <MeetTheTeam/>
       <HowItWorks />
       <Services />
       <FindYourHome />
-      <PropertyListings />
       <LandlordCTA/>
       <TermsOfService />
       <PrivacyPolicy  />

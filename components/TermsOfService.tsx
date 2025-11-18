@@ -1,307 +1,287 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Shield,
-  Briefcase,
-  Home,
-  DollarSign,
-  UserCheck,
-  XCircle,
-  FileText,
-  Lock,
-  Handshake,
-  ArrowLeft,
-  ArrowRight,
-} from "lucide-react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link as LinkIcon, List as TocIcon } from "lucide-react";
 
-const COLORS = {
-  primary: "#0d2549",
-  secondary: "#2da3dd",
-  accent: "#1e55a7",
-};
+// Article-style Terms of Service with sticky Table of Contents and anchor links
+// Uses TailwindCSS and semantic HTML for a professional legal-doc presentation.
 
-interface TermSection {
+type Section = {
   id: string;
   title: string;
-  number: string;
-  icon: React.ElementType;
-  points: (string | { subtitle: string; items: string[] })[];
-}
+  content: React.ReactNode;
+};
 
-const parsePoint = (text: string) =>
-  text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-
-const terms: TermSection[] = [
+const sections: Section[] = [
   {
-    id: "role",
-    title: "Our Role as an Agency",
-    number: "1",
-    icon: Briefcase,
-    points: [
-      "We are a housing agency that connects landlords with renters.",
-      "Provide property listings and video tours.",
-      "Arrange inspections through trained field operatives and company vehicles.",
-      "Facilitate a transparent process where renters pay landlords directly.",
-      "Charge a 10% service fee after securing a property.",
-      "We do not own or manage any listed properties.",
-    ],
+    id: "introduction",
+    title: "Introduction",
+    content: (
+      <>
+        <p>
+          Welcome to Eastern Housing Agency. By using our services, you agree to these Terms of Service. Please read them carefully; they are designed to protect you, the landlord, the renter, and our company, while keeping the renting process clear, fair, and stress-free.
+        </p>
+      </>
+    ),
   },
-
   {
-    id: "fees",
+    id: "our-role",
+    title: "Our Role",
+    content: (
+      <>
+        <p>We are a housing agency that connects landlords with renters. We:</p>
+        <ul className="list-disc pl-6 space-y-2 mt-3">
+          <li>Provide property listings and video tours.</li>
+          <li>Arrange inspections through our trained field operatives and company vehicles.</li>
+          <li>Facilitate a transparent process where renters pay rent directly to landlords.</li>
+          <li>Charge a service fee of 10% (paid by renters after successfully securing a property).</li>
+        </ul>
+        <p className="mt-3">We are not landlords and do not own the listed properties.</p>
+      </>
+    ),
+  },
+  {
+    id: "inspection-fees",
     title: "Inspection Fees",
-    number: "2",
-    icon: DollarSign,
-    points: [
-      "Renters pay a small inspection fee before viewing a property.",
-      "This fee covers logistics such as transport, operatives, and scheduling.",
-      "Valid for up to 3 inspections.",
-      "Inspection fees are non-refundable.",
-    ],
+    content: (
+      <>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Renters pay a small inspection fee before viewing any property.</li>
+          <li>
+            This fee covers logistics: assigning a trained field operative, transport, and customer service scheduling.
+          </li>
+          <li>The fee is valid for up to 3 house inspections.</li>
+          <li>The inspection fee is non-refundable.</li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "payments",
+    id: "transparency-of-payments",
     title: "Transparency of Payments",
-    number: "3",
-    icon: Home,
-    points: [
-      "Renters pay landlords directly.",
-      "We do not collect or store rent payments.",
-      "We only collect the agreed 10% service fee after securing a property.",
-    ],
+    content: (
+      <>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>Renters pay directly to the landlord.</li>
+          <li>Eastern Housing Agency does not collect or hold any payments on behalf of landlords.</li>
+          <li>Our company only collects the agreed 10% service fee after a renter secures a property.</li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "landlord",
+    id: "landlord-responsibilities",
     title: "Landlord Responsibilities",
-    number: "4",
-    icon: UserCheck,
-    points: [
-      "Landlords agree that:",
-      {
-        subtitle: "Key Agreements:",
-        items: [
-          "The property is legally theirs to rent.",
-          "All information provided is accurate.",
-          "They will honor agreements made with tenants.",
-        ],
-      },
-    ],
+    content: (
+      <>
+        <p>Landlords listing properties with us agree that:</p>
+        <ul className="list-disc pl-6 space-y-2 mt-3">
+          <li>The property is legally theirs to rent.</li>
+          <li>All information (rent, condition, availability) provided is accurate.</li>
+          <li>They will honor agreements made with tenants who rent through our platform.</li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "renter",
+    id: "renter-responsibilities",
     title: "Renter Responsibilities",
-    number: "5",
-    icon: FileText,
-    points: [
-      "Renters agree to:",
-      {
-        subtitle: "Key Duties:",
-        items: [
-          "Provide accurate personal information.",
-          "Respect properties during inspections.",
-          "Make payments directly to landlords and promptly pay service fees.",
-        ],
-      },
-    ],
+    content: (
+      <>
+        <p>Renters agree to:</p>
+        <ul className="list-disc pl-6 space-y-2 mt-3">
+          <li>Provide accurate personal details when booking inspections.</li>
+          <li>Treat properties with respect during inspections.</li>
+          <li>Make payment directly to the landlord, and service fees promptly to Eastern Housing Agency.</li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "cancellation",
-    title: "Cancellations & No-Shows",
-    number: "6",
-    icon: XCircle,
-    points: [
-      "Missed inspections still count toward the 3-inspection limit.",
-      "Landlords must notify us if a property becomes unavailable.",
-    ],
+    id: "cancellations-and-no-shows",
+    title: "Cancellations and No-Shows",
+    content: (
+      <>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>
+            If a renter fails to attend a scheduled inspection, the fee remains valid but will count toward the 3 inspections.
+          </li>
+          <li>
+            Landlords must notify us immediately if a property is no longer available to avoid inconveniencing renters.
+          </li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "limitations",
+    id: "service-limitations",
     title: "Service Limitations",
-    number: "7",
-    icon: Shield,
-    points: [
-      "We do not guarantee that every renter will secure a property.",
-      "We are not liable for landlord-tenant disputes after payment.",
-    ],
+    content: (
+      <>
+        <ul className="list-disc pl-6 space-y-2">
+          <li>We do not guarantee that every renter will secure a property.</li>
+          <li>
+            We are not liable for disputes between landlords and renters after rent has been paid, though we will provide guidance where possible.
+          </li>
+        </ul>
+      </>
+    ),
   },
-
   {
-    id: "privacy",
-    title: "Privacy & Data Protection",
-    number: "8",
-    icon: Lock,
-    points: [
-      "We protect your information and never sell or share personal data.",
-    ],
+    id: "privacy-and-data-protection",
+    title: "Privacy and Data Protection",
+    content: (
+      <>
+        <p>
+          We respect your privacy. Personal details (phone numbers, house numbers, payment confirmations) are used only for service purposes and are never sold or shared with third parties.
+        </p>
+      </>
+    ),
   },
-
   {
     id: "agreement",
     title: "Agreement",
-    number: "9",
-    icon: Handshake,
-    points: [
-      "By using our services, renters and landlords confirm agreement with these terms.",
-    ],
+    content: (
+      <>
+        <p>
+          By using our services, both renters and landlords confirm they understand and agree to these terms.
+        </p>
+      </>
+    ),
   },
 ];
 
-// Motion variants for directional slide animation
-const slideVariants = {
-  enterLeft: { x: -80, opacity: 0 },
-  enterRight: { x: 80, opacity: 0 },
-  center: { x: 0, opacity: 1 },
-  exitLeft: { x: -80, opacity: 0 },
-  exitRight: { x: 80, opacity: 0 },
-};
+export default function TermsOfService() {
+  const [activeId, setActiveId] = useState<string>(sections[0].id);
+  const [tocOpen, setTocOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-const TermCard = ({ section }: { section: TermSection }) => {
-  const Icon = section.icon;
+  const ids = useMemo(() => sections.map((s) => s.id), []);
 
-  return (
-    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-gray-100 max-w-2xl mx-auto">
-      <div className="flex items-center gap-4 mb-5">
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: `${COLORS.secondary}20` }}
-        >
-          <Icon className="text-[#1e55a7] w-6 h-6" />
-        </div>
+  // Scrollspy
+  useEffect(() => {
+    const headings = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (headings.length === 0) return;
 
-        <div>
-          <p className="font-black text-sm" style={{ color: COLORS.accent }}>
-            {section.number}.
-          </p>
-          <h3
-            className="text-xl md:text-2xl font-bold"
-            style={{ color: COLORS.primary }}
-          >
-            {section.title}
-          </h3>
-        </div>
-      </div>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveId(visible[0].target.id);
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
 
-      <ul className="space-y-3 text-gray-700 text-sm md:text-base">
-        {section.points.map((point, i) =>
-          typeof point === "string" ? (
-            <li key={i} dangerouslySetInnerHTML={{ __html: parsePoint(point) }} />
-          ) : (
-            <li key={i} className="mt-3">
-              <p className="font-semibold mb-1">{point.subtitle}</p>
-              <ul className="list-disc pl-5 space-y-1">
-                {point.items.map((item, j) => (
-                  <li key={j}>{item}</li>
-                ))}
-              </ul>
-            </li>
-          )
-        )}
-      </ul>
-    </div>
-  );
-};
+    headings.forEach((h) => observer.observe(h));
+    return () => observer.disconnect();
+  }, [ids]);
 
-export default function TermsOfServiceSlider() {
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState<"left" | "right">("right");
-
-  const next = () => {
-    if (index < terms.length - 1) {
-      setDirection("right");
-      setIndex((i) => i + 1);
-    }
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    setTocOpen(false);
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", `#${id}`);
   };
 
-  const prev = () => {
-    if (index > 0) {
-      setDirection("left");
-      setIndex((i) => i - 1);
-    }
-  };
+  const lastUpdated = "Last updated: Nov 2025";
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <span
-            className="px-4 py-2 rounded-full text-white text-sm font-semibold shadow-md inline-block mb-4"
-            style={{ backgroundColor: COLORS.accent }}
-          >
-            Legal Agreement
-          </span>
+    <section className="relative py-16 md:py-20 bg-gray-50 w-full overflow-hidden">
+      <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-[#2da3dd]/10 blur-3xl pointer-events-none hidden sm:block" />
+      <div className="absolute -bottom-16 -left-16 h-72 w-72 rounded-full bg-[#1e55a7]/10 blur-3xl pointer-events-none hidden sm:block" />
 
-          <h1
-            className="text-4xl md:text-5xl font-extrabold"
-            style={{ color: COLORS.primary }}
-          >
-            Terms of <span className="text-[#1e55a7]">Service</span>
+      <div className="max-w-[1300px] mx-auto px-6">
+        {/* Hero */}
+        <header className="text-center mb-10 md:mb-14">
+          <div className="inline-flex items-center gap-2 bg-[#1e55a7] text-white px-4 py-2 rounded-full text-xs font-semibold">
+            Terms of Service
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0d2549] mt-4 tracking-tight">
+            Clear, Fair, and Stress‑Free Renting
           </h1>
-
-          <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-            These terms protect renters, landlords, and our company.
+          <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+            Please review these terms carefully. They protect renters, landlords, and our company.
           </p>
-        </div>
+          <p className="text-gray-500 text-sm mt-2">{lastUpdated}</p>
+        </header>
 
-        {/* Slider */}
-        <div className="relative min-h-[380px]">
-          <motion.div
-            key={index}
-            initial={direction === "right" ? "enterRight" : "enterLeft"}
-            animate="center"
-            exit={direction === "right" ? "exitLeft" : "exitRight"}
-            variants={slideVariants}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="absolute inset-0 flex justify-center items-center"
-          >
-            <TermCard section={terms[index]} />
-          </motion.div>
-        </div>
+        {/* Two-column layout */}
+        <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0 overflow-x-hidden">
+          {/* TOC */}
+          <aside className="lg:col-span-4 xl:col-span-3 min-w-0">
+            {/* Mobile TOC toggle */}
+            <div className="lg:hidden mb-2">
+              <button
+                onClick={() => setTocOpen((v) => !v)}
+                className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm"
+                aria-expanded={tocOpen}
+                aria-controls="tos-toc"
+              >
+                <span className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <TocIcon className="w-4 h-4" /> Table of contents
+                </span>
+                <span className="text-xs text-gray-500">{sections.length} sections</span>
+              </button>
+            </div>
 
-        {/* Navigation */}
-        <div className="flex justify-center items-center gap-6 mt-10">
-          <button
-            onClick={prev}
-            disabled={index === 0}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition text-[#1e55a7]  ${
-              index === 0
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            <ArrowLeft className="w-4 h-4 text-[#1e55a7]" /> Previous
-          </button>
+            <nav
+              id="tos-toc"
+              className={`bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm lg:sticky lg:top-24 ${
+                tocOpen ? "block" : "hidden lg:block"
+              } max-w-full w-full overflow-x-hidden`}
+              aria-label="Table of contents"
+            >
+              <ol className="space-y-2 text-sm">
+                {sections.map((s) => (
+                  <li key={s.id}>
+                    <button
+                      onClick={() => scrollTo(s.id)}
+                      className={`w-full text-left px-3 py-2 rounded-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2da3dd] ${
+                        activeId === s.id
+                          ? "bg-[#2da3dd]/10 text-[#0d2549] font-semibold"
+                          : "hover:bg-gray-50 text-gray-700"
+                      }`}
+                      aria-current={activeId === s.id ? "true" : undefined}
+                    >
+                      {s.title}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </aside>
 
-          <button
-            onClick={next}
-            disabled={index === terms.length - 1}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition text-[#1e55a7]  ${
-              index === terms.length - 1
-                ? "opacity-40 cursor-not-allowed"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            Next <ArrowRight className="w-4 h-4 text-[#1e55a7] " />
-          </button>
-        </div>
+          {/* Article */}
+          <article className="lg:col-span-8 xl:col-span-9 min-w-0">
+            <div className="bg-white border border-gray-200 rounded-3xl shadow-sm p-6 sm:p-8 md:p-10 overflow-x-hidden">
+              {sections.map((s, i) => (
+                <section key={s.id} className={i !== 0 ? "mt-10 md:mt-12" : undefined}>
+                  <div className="group flex items-center gap-2 min-w-0">
+                    <h2 id={s.id} className="text-xl sm:text-2xl font-bold text-[#0d2549] tracking-tight scroll-mt-24 break-words">
+                      {s.title}
+                    </h2>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(`${location.origin}${location.pathname}#${s.id}`)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-gray-600"
+                      aria-label={`Copy link to ${s.title}`}
+                    >
+                      <LinkIcon className="w-4 h-4" />
+                    </button>
+                  </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-6">
-          {terms.map((_, i) => (
-            <div
-              key={i}
-              className={`w-3 h-3 rounded-full transition ${
-                i === index ? "bg-[#1e55a7]" : "bg-gray-300"
-              }`}
-            />
-          ))}
+                  <div className="prose prose-gray max-w-none mt-4 break-words">
+                    <div className="text-gray-700 leading-relaxed space-y-4">{s.content}</div>
+                  </div>
+
+                  {i < sections.length - 1 && <hr className="mt-8 md:mt-10 border-gray-200" />}
+                </section>
+              ))}
+            </div>
+          </article>
         </div>
       </div>
     </section>
