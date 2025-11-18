@@ -10,6 +10,9 @@ import Services from "@/components/Services";
 import Contact from "@/components/Contact";
 import PrivacyPolicy from "@/components/PrivacyPolicy";
 import PropertyListings from "@/components/PropertyListings";
+import TermsOfService from "@/components/TermsOfService";
+import LandlordCTA from "@/components/LandlordCTA";
+import MeetTheTeam from "@/components/MeetTheTeam";
 
 export default async function Home() {
   const session = await auth();
@@ -19,9 +22,13 @@ export default async function Home() {
       <Navbar/>
       <HeroSection />
       <AboutUs />
+      <MeetTheTeam/>
       <HowItWorks />
-      <PropertyListings />
       <Services />
+      <FindYourHome />
+      <PropertyListings />
+      <LandlordCTA/>
+      <TermsOfService />
       <PrivacyPolicy  />
       <Contact />
     </>

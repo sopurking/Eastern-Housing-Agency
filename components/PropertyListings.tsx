@@ -174,7 +174,7 @@ const PropertyListings = () => {
                     Book Inspection
                   </button>
                   <button
-                    onClick={(e) => e.preventDefault()}
+                    onClick={()=>router.push(`/properties/${property.id}`)}
                     className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
                     Explore

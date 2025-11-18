@@ -27,66 +27,7 @@ const FindYourHome = () => {
   //   { state: 'Imo', cities: ['Owerri', 'Orlu', 'Okigwe', 'Mbaise', 'Oguta'] }
   // ];
 
-  // // Flatten cities with state info
-  // useEffect(() => {
-  //   const allCities = easternNigeria.flatMap(state => 
-  //     state.cities.map(city => ({
-  //       name: city,
-  //       state: state.state,
-  //       display: `${city}, ${state.state}`
-  //     }))
-  //   );
-  //   setCities(allCities);
-  //   setFilteredCities(allCities);
-  // }, []);
-
-  // // Filter cities based on search
-  // useEffect(() => {
-  //   if (searchQuery) {
-  //     const filtered = cities.filter(city => 
-  //       city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //       city.state.toLowerCase().includes(searchQuery.toLowerCase())
-  //     );
-  //     setFilteredCities(filtered);
-  //   } else {
-  //     setFilteredCities(cities);
-  //   }
-  // }, [searchQuery, cities]);
-
-  // // Close dropdown when clicking outside
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setShowCityDropdown(false);
-  //     }
-  //   };
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => document.removeEventListener('mousedown', handleClickOutside);
-  // }, []);
-
-  // const handleCitySelect = (city) => {
-  //   setSelectedCity(city.display);
-  //   setSearchQuery(city.display);
-  //   setShowCityDropdown(false);
-  // };
-
-  // const handleSearch = () => {
-  //   console.log('Search params:', {
-  //     city: selectedCity,
-  //     propertyType,
-  //     priceRange,
-  //     bedrooms
-  //   });
-  //   // Implement actual search logic here
-  // };
-
-  // const clearFilters = () => {
-  //   setSearchQuery('');
-  //   setSelectedCity('');
-  //   setPropertyType('');
-  //   setPriceRange('');
-  //   setBedrooms('');
-  // };
+  
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-orange-50/30" id='properties'>
@@ -125,59 +66,22 @@ const FindYourHome = () => {
         >
           {/* Main Search Bar */}
           <div className="grid lg:grid-cols-12 gap-4 mb-4">
-            {/* Location Search */}
-            <div className="lg:col-span-5 relative" ref={dropdownRef}>
-              <div className="relative">
-                <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search city or state..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowCityDropdown(true);
-                  }}
-                  onFocus={() => setShowCityDropdown(true)}
-                  className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 placeholder-gray-400"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => {
-                      setSearchQuery('');
-                      setSelectedCity('');
-                    }}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                )}
-              </div>
-
-              {/* City Dropdown */}
-              <AnimatePresence>
-                {showCityDropdown && filteredCities.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 max-h-64 overflow-y-auto z-50"
-                  >
-                    {filteredCities.map((city, index) => (
-                      <button
-                        key={index}
-                        // onClick={() => handleCitySelect(city)}
-                        className="w-full px-4 py-3 text-left hover:bg-orange-50 transition-colors flex items-center gap-3 border-b border-gray-100 last:border-0"
-                      >
-                        <MapPin className="w-4 h-4 text-[#0d2549] flex-shrink-0" />
-                        <div>
-                          <div className="font-medium text-gray-900">Anambra</div>
-                          <div className="text-xs text-gray-500">Anambra State</div>
-                        </div>
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+      
+              <div className="lg:col-span-3 relative">
+              <Home className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 appearance-none bg-white cursor-pointer"
+              >
+                <option value="">Eastern States</option>
+                <option value="apartment">Abia</option>
+                <option value="house">Anambra</option>
+                <option value="villa">Imo</option>
+                <option value="duplex">Enugu</option>
+                <option value="land">Ebonyi</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
             </div>
 
             {/* Property Type */}
@@ -214,19 +118,7 @@ const FindYourHome = () => {
               </select>
               <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
             </div>
-
-            {/* Search Button */}
-            <div className="lg:col-span-2">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                // onClick={handleSearch}
-                className="w-full bg-[#2da3dd] text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <Search className="w-5 h-5" />
-                <span>Search</span>
-              </motion.button>
-            </div>
+            
           </div>
 
           {/* Advanced Filters Toggle */}
