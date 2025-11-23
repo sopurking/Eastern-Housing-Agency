@@ -200,7 +200,7 @@ export default function NewListingPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-lg font-semibold mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-600">Basic Information</h2>
           
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -211,7 +211,7 @@ export default function NewListingPage() {
                 value={formData.title}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="e.g., Luxury 4-Bedroom Duplex"
               />
             </div>
@@ -223,7 +223,7 @@ export default function NewListingPage() {
                 value={formData.type}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
               >
                 <option value="">Select Type</option>
                 {PROPERTY_TYPES.map(type => (
@@ -242,14 +242,14 @@ export default function NewListingPage() {
               value={formData.description}
               onChange={handleInputChange}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
               placeholder="Describe the property features, amenities, etc."
             />
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-lg font-semibold mb-4">Location</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-600">Location</h2>
           
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -259,7 +259,7 @@ export default function NewListingPage() {
                 value={formData.state}
                 onChange={handleStateChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
               >
                 <option value="">Select State</option>
                 {EASTERN_STATES.map(({ state }) => (
@@ -276,7 +276,7 @@ export default function NewListingPage() {
                 onChange={handleInputChange}
                 required
                 disabled={!formData.state}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-600"
               >
                 <option value="">Select City</option>
                 {selectedStateData?.cities.map(city => (
@@ -294,14 +294,14 @@ export default function NewListingPage() {
               value={formData.location}
               onChange={handleInputChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
               placeholder="e.g., Independence Layout, Enugu"
             />
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-lg font-semibold mb-4">Property Details</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-600">Property Details</h2>
           
           <div className="grid md:grid-cols-4 gap-4">
             <div>
@@ -312,7 +312,7 @@ export default function NewListingPage() {
                 value={formData.price}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="85000000"
               />
             </div>
@@ -324,7 +324,7 @@ export default function NewListingPage() {
                 name="beds"
                 value={formData.beds}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="4"
               />
             </div>
@@ -336,7 +336,7 @@ export default function NewListingPage() {
                 name="baths"
                 value={formData.baths}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="5"
               />
             </div>
@@ -348,7 +348,7 @@ export default function NewListingPage() {
                 name="sqft"
                 value={formData.sqft}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="3,500"
               />
             </div>
@@ -361,7 +361,7 @@ export default function NewListingPage() {
                 name="featured"
                 checked={formData.featured}
                 onChange={handleInputChange}
-                className="mr-2"
+                className="mr-2 text-gray-600"
               />
               <span className="text-sm font-medium text-gray-700">Featured Property</span>
             </label>
@@ -369,7 +369,7 @@ export default function NewListingPage() {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h2 className="text-lg font-semibold mb-4">Media Upload</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-600">Media Upload</h2>
           
           <div className="space-y-6">
             <div>
