@@ -3,9 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
-import SignInModal from "./SignInModal";
-import SignUpModal from "./SignUpModal"; 
-import { logout } from "@/lib/actions/auth";
+import MiniBrowserAuth from "./MiniBrowserAuth";
+import { signOut, useSession } from "next-auth/react";
 
 
 
@@ -13,21 +12,10 @@ import { logout } from "@/lib/actions/auth";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const { data: session, status } = useSession();
 
-  // States for modals
-  const [showSignInModal, setShowSignInModal] = useState(false);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
-
-  // Fetch logged-in user
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await fetch("/api/me");
-      const data = await res.json();
-      if (data.user) setUser(data.user);
-    };
-    fetchUser();
-  }, []);
+  // State for MiniBrowser
+  const [showMiniBrowser, setShowMiniBrowser] = useState(false);
 
   // Scroll handler
   useEffect(() => {
@@ -102,13 +90,13 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className={`font-medium transition-colors relative group ${
-                    isScrolled ? "text-gray-700 hover:text-[#0d2549]" : "text-white hover:text-[#0d2549]"
+                    isScrolled ? "text-gray-700 hover:text-white" : "text-white hover:text-white"
                   }`}
                 >
                   {link.name}
                   <span
-                    className={`absolute bottom-0 left-0 w-full h-0 transition-all duration-300 group-hover:h-0.5 ${
-                      isScrolled ? "bg-[#0d2549]" : "bg-[#0d2549]"
+                    className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                      isScrolled ? "bg-white" : "bg-white"
                     }`}
                   ></span>
                 </motion.a>
@@ -117,13 +105,23 @@ const Navbar = () => {
 
             {/* Desktop CTA Buttons */}
             <div className="hidden lg:flex items-center gap-4 justify-self-end">
-              {user ? (
+              {session?.user ? (
                 <>
                   <span className={`font-medium ${isScrolled ? "text-gray-700" : "text-white"}`}>
-                    Hi, {user.name.split(" ")[0]}
+                    Hi, {session.user.name?.split(" ")[0]}
                   </span>
+                  {session.user.role === 'admin' && (
+                    <motion.a
+                      href="/admin"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-5 py-2 bg-[#0d2549] text-white rounded-lg hover:bg-[#0b1f3e] transition"
+                    >
+                      Admin
+                    </motion.a>
+                  )}
                   <button
-                    onClick={() => logout()}
+                    onClick={() => signOut()}
                     className="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
                   >
                     Sign Out
@@ -132,7 +130,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <motion.button
-                    onClick={() => setShowSignInModal(true)}
+                    onClick={() => setShowMiniBrowser(true)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
@@ -142,7 +140,7 @@ const Navbar = () => {
                     Sign In
                   </motion.button>
                   <motion.button
-                    onClick={() => setShowSignUpModal(true)}
+                    onClick={() => setShowMiniBrowser(true)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-[#0d2549] text-white px-6 py-2.5 rounded-lg font-medium shadow-lg transition-all"
@@ -235,18 +233,45 @@ const Navbar = () => {
 
                 {/* Mobile CTA Buttons */}
                 <div className="space-y-3">
-                  <button
-                    className="w-full px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-colors"
-                    onClick={() => setShowSignInModal(true)}
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    className="w-full bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all"
-                    onClick={() => setShowSignUpModal(true)}
-                  >
-                    Get Started
-                  </button>
+                  {session?.user ? (
+                    <>
+                      <div className="px-4 py-3 bg-gray-50 rounded-lg">
+                        <span className="text-gray-700 font-medium">
+                          Hi, {session.user.name?.split(" ")[0]}
+                        </span>
+                      </div>
+                      {session.user.role === 'admin' && (
+                        <a
+                          href="/admin"
+                          className="w-full block px-6 py-3 bg-[#0d2549] text-white rounded-lg font-medium hover:bg-[#0b1f3e] transition text-center"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Admin Panel
+                        </a>
+                      )}
+                      <button
+                        onClick={() => signOut()}
+                        className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-800 transition"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="w-full px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-colors"
+                        onClick={() => setShowMiniBrowser(true)}
+                      >
+                        Sign In
+                      </button>
+                      <button
+                        className="w-full bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all"
+                        onClick={() => setShowMiniBrowser(true)}
+                      >
+                        Get Started
+                      </button>
+                    </>
+                  )}
                 </div>
 
                 {/* Mobile Menu Footer */}
@@ -261,9 +286,14 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Modals */}
-      {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />}
-      {showSignUpModal && <SignUpModal onClose={() => setShowSignUpModal(false)} />}
+      {/* Authentication */}
+      <MiniBrowserAuth 
+        isOpen={showMiniBrowser} 
+        onClose={() => setShowMiniBrowser(false)}
+        onSuccess={() => {
+          setShowMiniBrowser(false);
+        }}
+      />
     </>
   );
 };

@@ -14,15 +14,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  password  String?
-  role      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  accounts Account[]
-  sessions Session[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  role          String?
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  properties    Property[]
 }
 
 
@@ -59,4 +62,31 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Property {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  state       String
+  city        String
+  location    String   // Full address
+  type        String   // apartment, house, villa, duplex, land
+  price       Int
+  beds        Int?
+  baths       Int?
+  sqft        String?
+  images      String[] // Cloudinary URLs
+  videos      String[] // Cloudinary URLs
+  featured    Boolean  @default(false)
+  status      String   @default("active") // active, sold, rented
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  creator     User     @relation(fields: [createdBy], references: [id])
+  
+  @@index([state, city])
+  @@index([type])
+  @@index([status])
 }

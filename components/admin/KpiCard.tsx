@@ -13,7 +13,7 @@ export default function KpiCard({ label, value, trend, color, className = "" }: 
     <div className={`bg-white border border-gray-200 rounded-2xl p-5 shadow-sm ${className}`}>
       <div className="text-sm text-gray-500">{label}</div>
       <div className="mt-2 flex items-baseline gap-2">
-        <div className="text-2xl font-extrabold tracking-tight">{value}</div>
+        <div className="text-2xl font-extrabold tracking-tight text-black">{value}</div>
         {trend && (
           <span className="text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
             {trend}

@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "seed:admin": "npx tsx scripts/seed-admin.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -15,6 +16,7 @@
     "@types/bcryptjs": "^2.4.6",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.8.0",
     "cookie": "^1.0.2",
     "framer-motion": "^12.23.9",
     "jsonwebtoken": "^9.0.2",

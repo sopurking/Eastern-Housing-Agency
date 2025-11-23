@@ -9,9 +9,9 @@ export default function AdminTopbar({ onMenu }: { onMenu: () => void }) {
       <div className="max-w-[1300px] mx-auto px-6 h-full flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button onClick={onMenu} className="lg:hidden p-2 rounded hover:bg-gray-100">
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5 text-black" />
           </button>
-          <span className="font-extrabold text-gray-900 tracking-tight">Admin</span>
+          <span className="font-extrabold text-gray-900 tracking-tight">Eastern Housing Agency</span>
         </div>
 
         <div className="hidden md:flex items-center gap-2 flex-1 mx-6 max-w-xl">
@@ -26,7 +26,7 @@ export default function AdminTopbar({ onMenu }: { onMenu: () => void }) {
 
         <div className="flex items-center gap-3">
           <button className="p-2 rounded hover:bg-gray-100 relative">
-            <Bell className="w-5 h-5" />
+            <Bell className="w-5 h-5 text-black" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#2da3dd] rounded-full"></span>
           </button>
           <button className="p-1.5 rounded-full border border-gray-200">

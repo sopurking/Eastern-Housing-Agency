@@ -212,7 +212,7 @@ export default function TermsOfService() {
         {/* Two-column layout */}
         <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0 overflow-x-hidden">
           {/* TOC */}
-          <aside className="lg:col-span-4 xl:col-span-3 min-w-0">
+          <aside className="lg:col-span-4 xl:col-span-3 min-w-0 sticky">
             {/* Mobile TOC toggle */}
             <div className="lg:hidden mb-2">
               <button

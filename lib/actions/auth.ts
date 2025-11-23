@@ -1,21 +1,15 @@
 "use server"
-import { signIn, signOut } from "@/auth";
 
+import { signIn, signOut } from "@/auth"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
-
-export const login = async () => {
-    await signIn("google");
-
-
+export async function login() {
+  await signIn("google")
 }
-export const logout = async () => {
-  try {
-    // Call server endpoint to clear JWT cookie
-    await fetch("/api/logout", { method: "POST" });
 
-    // Redirect to home or refresh UI
-    window.location.href = "/";
-  } catch (err) {
-    console.error("Logout failed", err);
-  }
-};
+export async function logout() {
+  cookies().delete("token")
+  await signOut()
+  redirect("/")
+}

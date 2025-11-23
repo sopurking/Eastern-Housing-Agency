@@ -1,5 +1,3 @@
-"use server"
-
 import { auth } from "@/auth";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -13,12 +11,13 @@ import PropertyListings from "@/components/PropertyListings";
 import TermsOfService from "@/components/TermsOfService";
 import LandlordCTA from "@/components/LandlordCTA";
 import MeetTheTeam from "@/components/MeetTheTeam";
+import ClientWrapper from "@/components/ClientWrapper";
 
 export default async function Home() {
   const session = await auth();
   console.log(session);
   return (
-    <>
+    <ClientWrapper>
       <Navbar/>
       <HeroSection />
       <AboutUs />
@@ -29,6 +28,6 @@ export default async function Home() {
       <TermsOfService />
       <PrivacyPolicy  />
       <Contact />
-    </>
+    </ClientWrapper>
   );
 }

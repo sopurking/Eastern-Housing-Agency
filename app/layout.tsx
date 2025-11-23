@@ -2,7 +2,7 @@
 import "./globals.css";
 import { Poppins, Playfair_Display } from "next/font/google";
 import Script from "next/script"; 
-import { UserProvider } from "./context/UserContext";
+import Providers from "@/components/Providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -32,7 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           defer
         />
       </head>
-      <body className="font-sans overflow-x-hidden"><UserProvider>{children}</UserProvider></body>
+      <body className="font-sans overflow-x-hidden">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
