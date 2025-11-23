@@ -37,26 +37,34 @@ type Property = {
   featured: boolean;
 };
 
-const PropertyCard = ({ property, favorites, toggleFavorite }: { 
+/* ---------------------------------------------------------
+   PROPERTY CARD (MODAL REMOVED — uses callback instead)
+--------------------------------------------------------- */
+const PropertyCard = ({ 
+  property, 
+  favorites, 
+  toggleFavorite,
+  onOpenInspection
+}: { 
   property: Property; 
   favorites: Set<string>; 
   toggleFavorite: (id: string) => void;
+  onOpenInspection: () => void;
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mediaType, setMediaType] = useState<'images' | 'videos'>('images');
-  const [showInspectionModal, setShowInspectionModal] = useState(false);
-  
+
   // Debug logging for media
   console.log(`🏠 Property ${property.id} (${property.title}):`);
   console.log('🖼️ Raw images:', property.images);
   console.log('🎥 Raw videos:', property.videos);
   console.log('🔍 Images type:', typeof property.images, Array.isArray(property.images));
   console.log('🔍 Videos type:', typeof property.videos, Array.isArray(property.videos));
-  
+
   // Parse images and videos if they're strings
   let parsedImages: string[] = [];
   let parsedVideos: string[] = [];
-  
+
   try {
     if (typeof property.images === 'string') {
       parsedImages = JSON.parse(property.images);
@@ -68,7 +76,7 @@ const PropertyCard = ({ property, favorites, toggleFavorite }: {
     console.error('❌ Error parsing images:', error);
     parsedImages = [];
   }
-  
+
   try {
     if (typeof property.videos === 'string') {
       parsedVideos = JSON.parse(property.videos);
@@ -80,11 +88,11 @@ const PropertyCard = ({ property, favorites, toggleFavorite }: {
     console.error('❌ Error parsing videos:', error);
     parsedVideos = [];
   }
-  
+
   const currentMedia = mediaType === 'images' ? parsedImages : parsedVideos;
   const hasImages = parsedImages.length > 0;
   const hasVideos = parsedVideos.length > 0;
-  
+
   console.log('📊 Media stats:', { hasImages, hasVideos, currentMediaLength: currentMedia?.length || 0 });
 
   const nextMedia = (e: React.MouseEvent) => {
@@ -117,15 +125,18 @@ const PropertyCard = ({ property, favorites, toggleFavorite }: {
                   className="w-full h-full object-cover" 
                 />
               ) : (
-                <video 
-                  src={currentMedia[currentIndex]} 
+                <video
+                  key={currentMedia[currentIndex]}
+                  src={currentMedia[currentIndex]}
                   className="w-full h-full object-cover"
                   muted
                   loop
                   playsInline
+                  autoPlay
+                  controls
                 />
               )}
-              
+
               {currentMedia.length > 1 && (
                 <>
                   <button
@@ -224,7 +235,7 @@ const PropertyCard = ({ property, favorites, toggleFavorite }: {
             onClick={(e) => {
               e.preventDefault();
               console.log('📅 Opening inspection modal for property:', property.id);
-              setShowInspectionModal(true);
+              onOpenInspection();
             }}
             className="w-full bg-[#2da3dd] text-white py-2 px-4 rounded-lg font-medium hover:bg-[#2da3dd]/90 transition flex items-center justify-center gap-2"
           >
@@ -232,18 +243,15 @@ const PropertyCard = ({ property, favorites, toggleFavorite }: {
             Book Inspection
           </button>
         </div>
-        
-        {/* Inspection Modal */}
-        <InspectionModal
-          isOpen={showInspectionModal}
-          onClose={() => setShowInspectionModal(false)}
-          property={property}
-        />
       </motion.div>
     </Link>
   );
 };
 
+
+/* ---------------------------------------------------------
+   FIND YOUR HOME — MODAL RENDERED AT ROOT LEVEL
+--------------------------------------------------------- */
 const FindYourHome = () => {
   const router = useRouter();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -264,6 +272,9 @@ const FindYourHome = () => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const typeRef = useRef<HTMLDivElement | null>(null);
   const priceRef = useRef<HTMLDivElement | null>(null);
+
+  // NEW: modal moved to this level
+  const [activeProperty, setActiveProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -391,6 +402,7 @@ const FindYourHome = () => {
           </p>
         </motion.div>
 
+        {/* FILTERS */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -399,6 +411,7 @@ const FindYourHome = () => {
           className="mx-auto bg-white rounded-3xl shadow-2xl p-6 md:p-8 border border-gray-100"
         >
           <div className="grid md:grid-cols-12 gap-4">
+            {/* LOCATION */}
             <div className="md:col-span-5 relative" ref={dropdownRef}>
               <button
                 type="button"
@@ -427,12 +440,16 @@ const FindYourHome = () => {
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-2">
                       <div className="p-3 sm:p-4 border-b sm:border-b-0 sm:border-r border-gray-100 max-h-72 overflow-auto">
-                        <p className="text-xs uppercase text-gray-500 font-semibold mb-2 px-1">Available States</p>
+                        <p className="text-xs uppercase text-gray-500 font-semibold mb-2 px-1">
+                          Available States
+                        </p>
                         <ul className="space-y-1">
                           <li>
                             <button
                               className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                                selectedState === '' && selectedCity === '' ? 'bg-[#2da3dd]/10 text-[#0d2549]' : 'text-gray-700'
+                                selectedState === '' && selectedCity === '' 
+                                  ? 'bg-[#2da3dd]/10 text-[#0d2549]' 
+                                  : 'text-gray-700'
                               }`}
                               onClick={() => {
                                 setExpandedState('');
@@ -448,16 +465,24 @@ const FindYourHome = () => {
                             <li key={s.state}>
                               <button
                                 className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                                  expandedState === s.state ? 'bg-[#2da3dd]/10 text-[#0d2549]' : 'text-gray-700'
+                                  expandedState === s.state
+                                    ? 'bg-[#2da3dd]/10 text-[#0d2549]'
+                                    : 'text-gray-700'
                                 }`}
                                 onClick={() => {
-                                  setExpandedState((prev) => (prev === s.state ? '' : s.state));
+                                  setExpandedState((prev) => 
+                                    prev === s.state ? '' : s.state
+                                  );
                                   setSelectedState(s.state);
                                   setSelectedCity('');
                                 }}
                               >
                                 <span>{s.state}</span>
-                                <ChevronRight className={`w-4 h-4 transition-transform ${expandedState === s.state ? 'rotate-90' : ''}`} />
+                                <ChevronRight
+                                  className={`w-4 h-4 transition-transform ${
+                                    expandedState === s.state ? 'rotate-90' : ''
+                                  }`}
+                                />
                               </button>
                             </li>
                           ))}
@@ -467,24 +492,30 @@ const FindYourHome = () => {
                       <div className="p-3 sm:p-4 max-h-72 overflow-auto">
                         {expandedState ? (
                           <>
-                            <p className="text-xs uppercase text-gray-500 font-semibold mb-2 px-1">Cities in {expandedState}</p>
+                            <p className="text-xs uppercase text-gray-500 font-semibold mb-2 px-1">
+                              Cities in {expandedState}
+                            </p>
                             <ul className="space-y-1">
-                              {locations.find((s) => s.state === expandedState)?.cities.map((c) => (
-                                <li key={c}>
-                                  <button
-                                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                                      selectedCity === c ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' : 'text-gray-700'
-                                    }`}
-                                    onClick={() => {
-                                      setSelectedCity(c);
-                                      setSelectedState(expandedState);
-                                      setShowLocationDropdown(false);
-                                    }}
-                                  >
-                                    {c}
-                                  </button>
-                                </li>
-                              )) || []}
+                              {locations
+                                .find((s) => s.state === expandedState)
+                                ?.cities.map((c) => (
+                                  <li key={c}>
+                                    <button
+                                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
+                                        selectedCity === c
+                                          ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium'
+                                          : 'text-gray-700'
+                                      }`}
+                                      onClick={() => {
+                                        setSelectedCity(c);
+                                        setSelectedState(expandedState);
+                                        setShowLocationDropdown(false);
+                                      }}
+                                    >
+                                      {c}
+                                    </button>
+                                  </li>
+                                )) || []}
                             </ul>
                           </>
                         ) : (
@@ -499,6 +530,7 @@ const FindYourHome = () => {
               </AnimatePresence>
             </div>
 
+            {/* PROPERTY TYPE */}
             <div className="md:col-span-4 relative" ref={typeRef}>
               <button
                 type="button"
@@ -506,7 +538,11 @@ const FindYourHome = () => {
                 className="w-full text-left pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 bg-white relative"
               >
                 <HomeIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <span className="block truncate">{propertyType ? propertyType[0].toUpperCase() + propertyType.slice(1) : 'Property Type'}</span>
+                <span className="block truncate">
+                  {propertyType
+                    ? propertyType[0].toUpperCase() + propertyType.slice(1)
+                    : 'Property Type'}
+                </span>
                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
               </button>
 
@@ -523,7 +559,9 @@ const FindYourHome = () => {
                       <li>
                         <button
                           className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                            propertyType === '' ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' : 'text-gray-700'
+                            propertyType === '' 
+                              ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' 
+                              : 'text-gray-700'
                           }`}
                           onClick={() => {
                             setPropertyType('');
@@ -533,11 +571,14 @@ const FindYourHome = () => {
                           All
                         </button>
                       </li>
+
                       {availableTypes.map((t) => (
                         <li key={t}>
                           <button
                             className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                              propertyType === t ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' : 'text-gray-700'
+                              propertyType === t
+                                ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium'
+                                : 'text-gray-700'
                             }`}
                             onClick={() => {
                               setPropertyType(t);
@@ -554,6 +595,7 @@ const FindYourHome = () => {
               </AnimatePresence>
             </div>
 
+            {/* PRICE RANGE */}
             <div className="md:col-span-3 relative" ref={priceRef}>
               <button
                 type="button"
@@ -561,7 +603,11 @@ const FindYourHome = () => {
                 className="w-full text-left pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:border-[#2da3dd] focus:outline-none transition-colors text-gray-900 bg-white relative"
               >
                 <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <span className="block truncate">{priceRange ? priceRanges.find((r) => r.key === priceRange)?.label : 'Price Range'}</span>
+                <span className="block truncate">
+                  {priceRange
+                    ? priceRanges.find((r) => r.key === priceRange)?.label
+                    : 'Price Range'}
+                </span>
                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
               </button>
 
@@ -578,7 +624,9 @@ const FindYourHome = () => {
                       <li>
                         <button
                           className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                            priceRange === '' ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' : 'text-gray-700'
+                            priceRange === '' 
+                              ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' 
+                              : 'text-gray-700'
                           }`}
                           onClick={() => {
                             setPriceRange('');
@@ -588,11 +636,14 @@ const FindYourHome = () => {
                           All
                         </button>
                       </li>
+
                       {priceRanges.map((r) => (
                         <li key={r.key}>
                           <button
                             className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                              priceRange === r.key ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium' : 'text-gray-700'
+                              priceRange === r.key
+                                ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium'
+                                : 'text-gray-700'
                             }`}
                             onClick={() => {
                               setPriceRange(r.key);
@@ -608,15 +659,24 @@ const FindYourHome = () => {
                 )}
               </AnimatePresence>
             </div>
+
           </div>
         </motion.div>
 
+        {/* PROPERTY GRID */}
         <div className="mt-10">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">Featured Properties</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
+            Featured Properties
+          </h3>
+
           {loading ? (
-            <div className="text-center text-gray-500 py-14">Loading properties...</div>
+            <div className="text-center text-gray-500 py-14">
+              Loading properties...
+            </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center text-gray-500 py-14">No properties match your filters.</div>
+            <div className="text-center text-gray-500 py-14">
+              No properties match your filters.
+            </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((property) => (
@@ -625,6 +685,7 @@ const FindYourHome = () => {
                   property={property} 
                   favorites={favorites} 
                   toggleFavorite={toggleFavorite} 
+                  onOpenInspection={() => setActiveProperty(property)}
                 />
               ))}
             </div>
@@ -640,6 +701,16 @@ const FindYourHome = () => {
           </div>
         </div>
       </div>
+
+      {/* ROOT-LEVEL INSPECTION MODAL */}
+      {activeProperty && (
+        <InspectionModal 
+          isOpen={true}
+          onClose={() => setActiveProperty(null)}
+          property={activeProperty}
+        />
+      )}
+
     </section>
   );
 };
