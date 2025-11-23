@@ -4,10 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import MiniBrowserAuth from "./MiniBrowserAuth";
-import { signOut, useSession } from "next-auth/react";
-
-
-
+import { signOut, useSession, signIn } from "next-auth/react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +13,20 @@ const Navbar = () => {
 
   // State for MiniBrowser
   const [showMiniBrowser, setShowMiniBrowser] = useState(false);
+
+  // ⭐ NEW: Unified auth handler (Option 2)
+  const handleAuth = () => {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile → redirect (no popup)
+      signIn("google");
+      return;
+    }
+
+    // Desktop → popup
+    setShowMiniBrowser(true);
+  };
 
   // Scroll handler
   useEffect(() => {
@@ -80,7 +91,7 @@ const Navbar = () => {
               </span>
             </motion.div>
 
-            {/* Desktop Navigation - Centered */}
+            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 justify-self-center">
               {navLinks.map((link, index) => (
                 <motion.a
@@ -110,7 +121,7 @@ const Navbar = () => {
                   <span className={`font-medium ${isScrolled ? "text-gray-700" : "text-white"}`}>
                     Hi, {session.user.name?.split(" ")[0]}
                   </span>
-                  {session.user.role === 'admin' && (
+                  {session.user.role === "admin" && (
                     <motion.a
                       href="/admin"
                       whileHover={{ scale: 1.05 }}
@@ -130,7 +141,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <motion.button
-                    onClick={() => setShowMiniBrowser(true)}
+                    onClick={handleAuth}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-6 py-2.5 rounded-lg font-medium transition-all ${
@@ -139,8 +150,9 @@ const Navbar = () => {
                   >
                     Sign In
                   </motion.button>
+
                   <motion.button
-                    onClick={() => setShowMiniBrowser(true)}
+                    onClick={handleAuth}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-[#0d2549] text-white px-6 py-2.5 rounded-lg font-medium shadow-lg transition-all"
@@ -150,17 +162,6 @@ const Navbar = () => {
                 </>
               )}
             </div>
-
-            {/* Mobile Menu Button */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-2 rounded-lg transition-colors justify-self-end ${
-                isScrolled ? "text-gray-900 hover:bg-gray-100" : "text-white hover:bg-white/10"
-              }`}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </motion.button>
           </div>
         </div>
       </motion.nav>
@@ -240,7 +241,8 @@ const Navbar = () => {
                           Hi, {session.user.name?.split(" ")[0]}
                         </span>
                       </div>
-                      {session.user.role === 'admin' && (
+
+                      {session.user.role === "admin" && (
                         <a
                           href="/admin"
                           className="w-full block px-6 py-3 bg-[#0d2549] text-white rounded-lg font-medium hover:bg-[#0b1f3e] transition text-center"
@@ -249,6 +251,7 @@ const Navbar = () => {
                           Admin Panel
                         </a>
                       )}
+
                       <button
                         onClick={() => signOut()}
                         className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-800 transition"
@@ -260,13 +263,14 @@ const Navbar = () => {
                     <>
                       <button
                         className="w-full px-6 py-3 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition-colors"
-                        onClick={() => setShowMiniBrowser(true)}
+                        onClick={handleAuth}
                       >
                         Sign In
                       </button>
+
                       <button
                         className="w-full bg-[#0d2549] hover:bg-[#0d2549] text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-all"
-                        onClick={() => setShowMiniBrowser(true)}
+                        onClick={handleAuth}
                       >
                         Get Started
                       </button>
@@ -286,9 +290,9 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Authentication */}
-      <MiniBrowserAuth 
-        isOpen={showMiniBrowser} 
+      {/* Authentication Popup */}
+      <MiniBrowserAuth
+        isOpen={showMiniBrowser}
         onClose={() => setShowMiniBrowser(false)}
         onSuccess={() => {
           setShowMiniBrowser(false);
