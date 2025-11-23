@@ -18,7 +18,9 @@ const HeroSection = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden" id='home'>
+
       {/* Background Image with Overlay */}
+      
       <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&h=1080&fit=crop"
