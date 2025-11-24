@@ -19,6 +19,7 @@ export const {auth, handlers, signIn, signOut} = NextAuth({
   
   callbacks: {
     async session({ session, user }) {
+      console.log('[Auth] Session callback - user:', user?.email);
       if (session.user) {
         session.user.id = user.id;
         session.user.role = user.role || 'user';
@@ -26,17 +27,26 @@ export const {auth, handlers, signIn, signOut} = NextAuth({
       return session;
     },
     async signIn({ user, account, profile }) {
-      if (account?.provider === "google" && !user.role) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { role: 'user' }
+      console.log('[Auth] SignIn callback - provider:', account?.provider, 'email:', user.email);
+      
+      if (account?.provider === "google" && user.email) {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email }
         });
+        
+        console.log('[Auth] User lookup:', existingUser ? 'Found' : 'Not found', 'role:', existingUser?.role);
+        
+        if (existingUser && !existingUser.role) {
+          console.log('[Auth] Updating user role to "user"');
+          await prisma.user.update({
+            where: { id: existingUser.id },
+            data: { role: 'user' }
+          });
+        }
       }
+      
+      console.log('[Auth] SignIn callback returning true');
       return true;
-    },
-    async redirect({ url, baseUrl }) {
-      // Always redirect to callback page for popup authentication
-      return `${baseUrl}/auth/callback`;
     },
   },
   

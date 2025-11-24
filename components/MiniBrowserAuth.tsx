@@ -11,55 +11,58 @@ interface MiniBrowserAuthProps {
 export default function MiniBrowserAuth({ isOpen, onClose, onSuccess }: MiniBrowserAuthProps) {
   useEffect(() => {
     if (!isOpen) return;
+    console.log('[MiniBrowser] Opening authentication popup');
 
-    // Listen for messages from the popup
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      console.log('[MiniBrowser] Message received:', event.data);
+      if (event.origin !== window.location.origin) {
+        console.log('[MiniBrowser] Message from different origin, ignoring');
+        return;
+      }
       
       if (event.data.type === 'AUTH_SUCCESS') {
-        console.log('Authentication successful:', event.data.user);
+        console.log('[MiniBrowser] Authentication successful:', event.data.user);
         onSuccess?.();
         onClose();
-        // Reload to update session
         setTimeout(() => window.location.reload(), 500);
       } else if (event.data.type === 'AUTH_ERROR') {
-        console.error('Authentication error:', event.data.error);
+        console.error('[MiniBrowser] Authentication error:', event.data.error);
         onClose();
       }
     };
 
     window.addEventListener('message', handleMessage);
 
-    // Calculate center position for popup
     const width = 500;
     const height = 600;
     const left = (screen.width - width) / 2;
     const top = (screen.height - height) / 2;
 
-    // Directly open the popup when component mounts
+    console.log('[MiniBrowser] Opening popup window');
     const popup = window.open(
       '/api/auth/signin/google',
       'google-signin',
       `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,status=yes,location=yes,toolbar=no,menubar=no`
     );
 
-    // Check if popup was blocked
     if (!popup) {
+      console.error('[MiniBrowser] Popup blocked');
       alert('Popup blocked! Please allow popups for this site.');
       onClose();
       return;
     }
+    console.log('[MiniBrowser] Popup opened successfully');
 
-    // Monitor popup closure (fallback)
     const checkClosed = setInterval(() => {
       if (popup.closed) {
+        console.log('[MiniBrowser] Popup closed by user');
         clearInterval(checkClosed);
         onClose();
       }
     }, 1000);
 
-    // Cleanup function
     return () => {
+      console.log('[MiniBrowser] Cleanup');
       window.removeEventListener('message', handleMessage);
       clearInterval(checkClosed);
       if (!popup.closed) {

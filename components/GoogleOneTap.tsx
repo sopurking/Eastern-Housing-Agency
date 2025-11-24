@@ -1,18 +1,10 @@
 "use client";
 
 import { useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 
 declare global {
   interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (config: any) => void;
-          prompt: () => void;
-        };
-      };
-    };
+    google: any;
   }
 }
 
@@ -21,39 +13,33 @@ interface GoogleOneTapProps {
 }
 
 export default function GoogleOneTap({ onSuccess }: GoogleOneTapProps) {
-  const { data: session, status } = useSession();
-
   useEffect(() => {
-    // Only show One Tap if user is not authenticated and session is loaded
-    if (status === 'loading' || session?.user) return;
-
+    console.log('[GoogleOneTap] Component mounted');
+    
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
+    script.defer = true;
     document.head.appendChild(script);
 
     script.onload = () => {
-      window.google?.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-        callback: async (response: any) => {
-          try {
-            const res = await fetch('/api/auth/google-signin', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ credential: response.credential })
-            });
-            
-            if (res.ok) {
-              onSuccess?.();
-              window.location.reload();
-            }
-          } catch (error) {
-            console.error('One Tap auth error:', error);
-          }
-        }
-      });
+      console.log('[GoogleOneTap] Google script loaded');
+      
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: '306046224756-vdtn1r7jgpdahd64bo6b9gvo79alaros.apps.googleusercontent.com',
+          callback: handleCredentialResponse,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
 
-      window.google?.accounts.id.prompt();
+        console.log('[GoogleOneTap] Showing One Tap prompt');
+        window.google.accounts.id.prompt((notification: any) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            console.log('[GoogleOneTap] Prompt not displayed:', notification.getNotDisplayedReason());
+          }
+        });
+      }
     };
 
     return () => {
@@ -61,7 +47,38 @@ export default function GoogleOneTap({ onSuccess }: GoogleOneTapProps) {
         document.head.removeChild(script);
       }
     };
-  }, [onSuccess, session, status]);
+  }, []);
+
+  const handleCredentialResponse = async (response: any) => {
+    console.log('[GoogleOneTap] Credential received, processing...');
+    
+    try {
+      console.log('[GoogleOneTap] Sending credential to backend');
+      const res = await fetch('/api/auth/google-one-tap', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          credential: response.credential,
+        }),
+      });
+
+      console.log('[GoogleOneTap] Backend response status:', res.status);
+      const data = await res.json();
+      console.log('[GoogleOneTap] Backend response data:', data);
+
+      if (res.ok) {
+        console.log('[GoogleOneTap] Authentication successful, reloading page');
+        onSuccess?.();
+        window.location.reload();
+      } else {
+        console.error('[GoogleOneTap] Authentication failed:', data);
+      }
+    } catch (error) {
+      console.error('[GoogleOneTap] Error during authentication:', error);
+    }
+  };
 
   return null;
 }
