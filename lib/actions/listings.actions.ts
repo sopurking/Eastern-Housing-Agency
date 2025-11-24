@@ -25,7 +25,6 @@ export async function createProperty(formData: FormData) {
     const price = parseInt(formData.get("price") as string);
     const beds = formData.get("beds") ? parseInt(formData.get("beds") as string) : null;
     const baths = formData.get("baths") ? parseInt(formData.get("baths") as string) : null;
-    const sqft = formData.get("sqft") as string || null;
     const featured = formData.get("featured") === "true";
     const status = formData.get("status") as string || "active";
     
@@ -52,7 +51,6 @@ export async function createProperty(formData: FormData) {
       price,
       beds,
       baths,
-      sqft,
       images,
       videos,
       featured,
@@ -100,7 +98,6 @@ export async function updateProperty(id: string, formData: FormData) {
         price: parseInt(formData.get("price") as string),
         beds: formData.get("beds") ? parseInt(formData.get("beds") as string) : null,
         baths: formData.get("baths") ? parseInt(formData.get("baths") as string) : null,
-        sqft: formData.get("sqft") as string || null,
         images: JSON.parse(formData.get("images") as string || "[]").filter((url: string) => url),
         videos: JSON.parse(formData.get("videos") as string || "[]").filter((url: string) => url),
         featured: formData.get("featured") === "true",

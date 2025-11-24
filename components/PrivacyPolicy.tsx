@@ -248,9 +248,9 @@ export default function PrivacyPolicy() {
 
             <nav
               id="pp-toc"
-              className={`bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm lg:sticky lg:top-24 ${
+              className={`bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto ${
                 tocOpen ? "block" : "hidden lg:block"
-              } max-w-full w-full overflow-x-hidden`}
+              } max-w-full w-full`}
               aria-label="Table of contents"
             >
               <ol className="space-y-2 text-sm">

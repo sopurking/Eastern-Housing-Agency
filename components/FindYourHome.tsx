@@ -10,7 +10,6 @@ import {
   ChevronRight,
   Heart,
   Bath,
-  Square,
   Bed,
   ChevronLeft,
   Image as ImageIcon,
@@ -31,7 +30,6 @@ type Property = {
   price: number;
   beds: number | null;
   baths: number | null;
-  sqft: string | null;
   images: string[] | string;
   videos: string[] | string;
   featured: boolean;
@@ -227,7 +225,6 @@ const PropertyCard = ({
           <div className="flex gap-4 mb-4 text-gray-600 text-sm">
             {property.beds && <span className="flex items-center gap-1"><Bed className="w-4 h-4" /> {property.beds}</span>}
             {property.baths && <span className="flex items-center gap-1"><Bath className="w-4 h-4" /> {property.baths}</span>}
-            {property.sqft && <span className="flex items-center gap-1"><Square className="w-4 h-4" /> {property.sqft} sqft</span>}
           </div>
           
           {/* Book Inspection Button */}

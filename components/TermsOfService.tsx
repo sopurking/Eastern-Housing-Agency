@@ -212,7 +212,7 @@ export default function TermsOfService() {
         {/* Two-column layout */}
         <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0 overflow-x-hidden">
           {/* TOC */}
-          <aside className="lg:col-span-4 xl:col-span-3 min-w-0 sticky">
+          <aside className="lg:col-span-4 xl:col-span-3 min-w-0">
             {/* Mobile TOC toggle */}
             <div className="lg:hidden mb-2">
               <button
@@ -230,9 +230,9 @@ export default function TermsOfService() {
 
             <nav
               id="tos-toc"
-              className={`bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm lg:sticky lg:top-24 ${
+              className={`bg-white border border-gray-200 rounded-2xl p-4 lg:p-6 shadow-sm sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto ${
                 tocOpen ? "block" : "hidden lg:block"
-              } max-w-full w-full overflow-x-hidden`}
+              } max-w-full w-full`}
               aria-label="Table of contents"
             >
               <ol className="space-y-2 text-sm">

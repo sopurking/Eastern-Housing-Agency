@@ -28,7 +28,6 @@ export default function NewListingPage() {
     price: '',
     beds: '',
     baths: '',
-    sqft: '',
     featured: false,
   });
 
@@ -303,7 +302,7 @@ export default function NewListingPage() {
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <h2 className="text-lg font-semibold mb-4 text-gray-600">Property Details</h2>
           
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Price (₦)</label>
               <input
@@ -338,18 +337,6 @@ export default function NewListingPage() {
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
                 placeholder="5"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Square Feet</label>
-              <input
-                type="text"
-                name="sqft"
-                value={formData.sqft}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-                placeholder="3,500"
               />
             </div>
           </div>
