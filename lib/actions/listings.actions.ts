@@ -86,22 +86,44 @@ export async function updateProperty(id: string, formData: FormData) {
   }
 
   try {
+    // Helpers
+    const getString = (key: string) => {
+      const val = formData.get(key);
+      return val === undefined || val === null ? "" : String(val);
+    };
+
+    const getNumber = (key: string) => {
+      const val = formData.get(key);
+      return val ? Number(val) : null;
+    };
+
+    const parseJSON = (key: string) => {
+      const raw = getString(key);
+      try {
+        return JSON.parse(raw || "[]").filter((x: string) => x);
+      } catch {
+        return [];
+      }
+    };
+
     const property = await prisma.property.update({
       where: { id },
       data: {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        state: formData.get("state") as string,
-        city: formData.get("city") as string,
-        location: formData.get("location") as string,
-        type: formData.get("type") as string,
-        price: parseInt(formData.get("price") as string),
-        beds: formData.get("beds") ? parseInt(formData.get("beds") as string) : null,
-        baths: formData.get("baths") ? parseInt(formData.get("baths") as string) : null,
-        images: JSON.parse(formData.get("images") as string || "[]").filter((url: string) => url),
-        videos: JSON.parse(formData.get("videos") as string || "[]").filter((url: string) => url),
-        featured: formData.get("featured") === "true",
-        status: formData.get("status") as string || "active",
+        title: getString("title"),
+        description: getString("description"),
+        state: getString("state"),
+        city: getString("city"),
+        location: getString("location"),
+        type: getString("type"),
+        price: Number(getString("price") || 0),
+        beds: getNumber("beds"),
+        baths: getNumber("baths"),
+
+        images: parseJSON("images"),
+        videos: parseJSON("videos"),
+
+        featured: getString("featured") === "true",
+        status: getString("status") || "active",
       },
     });
 
@@ -120,9 +142,24 @@ export async function deleteProperty(id: string) {
   }
 
   try {
-    await prisma.property.delete({
-      where: { id },
-    });
+    const property = await prisma.property.findUnique({ where: { id } });
+    if (!property) return { error: "Property not found" };
+
+    // Delete media from Cloudinary
+    const allMedia = [...(property.images || []), ...(property.videos || [])];
+    for (const url of allMedia) {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/delete`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+      } catch (err) {
+        console.error('Failed to delete media:', url);
+      }
+    }
+
+    await prisma.property.delete({ where: { id } });
 
     revalidatePath("/admin/listings");
     return { success: true };

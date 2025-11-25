@@ -4,15 +4,7 @@ import React, { useEffect, useState } from "react";
 import { X, Upload } from "lucide-react";
 import { updateProperty } from "@/lib/actions/listings.actions";
 
-const EASTERN_STATES = [
-  { state: 'Abia', cities: ['Aba', 'Umuahia', 'Arochukwu', 'Ohafia', 'Bende'] },
-  { state: 'Anambra', cities: ['Awka', 'Onitsha', 'Nnewi', 'Ekwulobia', 'Ihiala'] },
-  { state: 'Ebonyi', cities: ['Abakaliki', 'Afikpo', 'Onueke', 'Ezza', 'Ishielu'] },
-  { state: 'Enugu', cities: ['Enugu', 'Nsukka', 'Agbani', 'Oji River', 'Udi'] },
-  { state: 'Imo', cities: ['Owerri', 'Orlu', 'Okigwe', 'Mbaise', 'Oguta'] },
-];
-
-const PROPERTY_TYPES = ['apartment', 'house', 'villa', 'duplex', 'land'];
+const PROPERTY_TYPES = ["apartment", "house", "villa", "duplex", "land"];
 
 export default function PropertyModal({ open, onClose, property, onUpdated }) {
   const [loading, setLoading] = useState(false);
@@ -31,8 +23,11 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
     status: "active",
   });
 
-  const [imagePreviews] = useState(property.images || []);
-  const [videoPreviews] = useState(property.videos || []);
+  const [images, setImages] = useState([]);
+  const [videos, setVideos] = useState([]);
+
+  const [newImageFiles, setNewImageFiles] = useState([]);
+  const [newVideoFiles, setNewVideoFiles] = useState([]);
 
   useEffect(() => {
     if (property) {
@@ -49,14 +44,13 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
         featured: property.featured,
         status: property.status || "active",
       });
+
+      setImages(property.images || []);
+      setVideos(property.videos || []);
     }
   }, [property]);
 
   if (!open) return null;
-
-  const selectedStateData = EASTERN_STATES.find(
-    (s) => s.state === formData.state
-  );
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
@@ -66,42 +60,87 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
     }));
   };
 
-  const handleStateChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      state: e.target.value,
-      city: "",
-    }));
-  };
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    // Delete removed media from Cloudinary
+    const removedImages = (property.images || []).filter(url => !images.includes(url));
+    const removedVideos = (property.videos || []).filter(url => !videos.includes(url));
+    
+    for (const url of [...removedImages, ...removedVideos]) {
+      await fetch('/api/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+    }
+
+    // Upload new images
+    const uploadedImages = [];
+    for (const file of newImageFiles) {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'properties');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData
+      });
+      
+      if (!response.ok) throw new Error('Failed to upload image');
+      const data = await response.json();
+      uploadedImages.push(data.url);
+    }
+
+    // Upload new videos
+    const uploadedVideos = [];
+    for (const file of newVideoFiles) {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('folder', 'properties');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData
+      });
+      
+      if (!response.ok) throw new Error('Failed to upload video');
+      const data = await response.json();
+      uploadedVideos.push(data.url);
+    }
+
+    const finalImages = [...images.filter(url => !url.startsWith('blob:')), ...uploadedImages];
+    const finalVideos = [...videos.filter(url => !url.startsWith('blob:')), ...uploadedVideos];
 
     const payload = new FormData();
-    Object.entries(formData).forEach(([k, v]) =>
-      payload.append(k, v.toString())
+    Object.entries(formData).forEach(([key, value]) =>
+      payload.append(key, value.toString())
     );
-
-    payload.append("images", JSON.stringify(property.images));
-    payload.append("videos", JSON.stringify(property.videos));
+    payload.append("images", JSON.stringify(finalImages));
+    payload.append("videos", JSON.stringify(finalVideos));
 
     const result = await updateProperty(property.id, payload);
 
     if (result.success) {
-      onUpdated();   // refresh table instantly
+      onUpdated();
       onClose();
     } else {
       alert(result.error);
     }
-
+  } catch (error) {
+    console.error(error);
+    alert("Error updating property");
+  } finally {
     setLoading(false);
-  };
+  }
+};
+
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-3xl rounded-lg shadow-lg overflow-y-auto max-h-[90vh] p-6 relative">
-
         <button
           className="absolute top-4 right-4 text-gray-600 hover:text-black"
           onClick={onClose}
@@ -109,12 +148,9 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
           <X className="w-6 h-6" />
         </button>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
-          Edit Property
-        </h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Edit Property</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* BASIC INFO */}
           <div className="bg-white border rounded-lg p-4 space-y-4">
             <div>
@@ -123,7 +159,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className="w-full border rounded px-3 py-2"
+                placeholder="Property title"
+                className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
               />
             </div>
 
@@ -133,7 +170,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                className="w-full border rounded px-3 py-2"
+                placeholder="Property description"
+                className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
               />
             </div>
 
@@ -143,7 +181,7 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 name="type"
                 value={formData.type}
                 onChange={handleInputChange}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-3 py-2 text-gray-700"
               >
                 <option value="">Select Type</option>
                 {PROPERTY_TYPES.map((t) => (
@@ -160,37 +198,24 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block font-medium mb-1 text-gray-600">State</label>
-                <select
+                <input
                   name="state"
                   value={formData.state}
-                  onChange={handleStateChange}
-                  className="w-full border rounded px-3 py-2"
-                >
-                  <option value="">Select State</option>
-                  {EASTERN_STATES.map((s) => (
-                    <option key={s.state} value={s.state}>
-                      {s.state}
-                    </option>
-                  ))}
-                </select>
+                  onChange={handleInputChange}
+                  placeholder="Enter state"
+                  className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
+                />
               </div>
 
               <div>
                 <label className="block font-medium mb-1 text-gray-600">City</label>
-                <select
+                <input
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2"
-                  disabled={!formData.state}
-                >
-                  <option value="">Select City</option>
-                  {selectedStateData?.cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="Enter city"
+                  className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
+                />
               </div>
             </div>
 
@@ -200,7 +225,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                className="w-full border rounded px-3 py-2"
+                placeholder="Street / Area"
+                className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
               />
             </div>
           </div>
@@ -215,7 +241,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                   type="number"
                   value={formData.price}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2"
+                  placeholder="0"
+                  className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
                 />
               </div>
 
@@ -226,7 +253,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                   type="number"
                   value={formData.beds}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2"
+                  placeholder="0"
+                  className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
                 />
               </div>
 
@@ -237,7 +265,8 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                   type="number"
                   value={formData.baths}
                   onChange={handleInputChange}
-                  className="w-full border rounded px-3 py-2"
+                  placeholder="0"
+                  className="w-full border rounded px-3 py-2 text-gray-700 placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -248,7 +277,7 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 name="status"
                 value={formData.status}
                 onChange={handleInputChange}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border rounded px-3 py-2 text-gray-700"
               >
                 <option value="active">Active</option>
                 <option value="pending">Pending</option>
@@ -256,7 +285,7 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
               </select>
             </div>
 
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-gray-700">
               <input
                 type="checkbox"
                 name="featured"
@@ -267,31 +296,79 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
             </label>
           </div>
 
-          {/* MEDIA (READ-ONLY LIST) */}
-          <div className="bg-white border rounded-lg p-4">
-            <h3 className="font-medium mb-2 text-gray-700">Images</h3>
+          {/* MEDIA */}
+          <div className="bg-white border rounded-lg p-4 space-y-4">
+            <h3 className="font-medium text-gray-700 mb-2">Images</h3>
+
             <div className="grid grid-cols-3 gap-3">
-              {imagePreviews.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  className="h-24 w-full object-cover rounded"
-                />
+              {images.map((img, i) => (
+                <div key={i} className="relative">
+                  <img
+                    src={img}
+                    className="h-24 w-full object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setImages((prev) => prev.filter((_, idx) => idx !== i))
+                    }
+                    className="absolute top-1 right-1 bg-black/60 text-white p-1 rounded"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               ))}
+
+              <label className="h-24 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100">
+                <Upload className="w-6 h-6 text-gray-500" />
+                <input
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files);
+                    const urls = files.map((f) => URL.createObjectURL(f));
+                    setImages((prev) => [...prev, ...urls]);
+                    setNewImageFiles((prev) => [...prev, ...files]);
+                  }}
+                />
+              </label>
             </div>
 
-            <h3 className="font-medium mt-4 mb-2 text-gray-700">
-              Videos
-            </h3>
+            <h3 className="font-medium text-gray-700 mt-4 mb-2">Videos</h3>
+
             <div className="grid grid-cols-2 gap-3">
-              {videoPreviews.map((v, i) => (
-                <video
-                  key={i}
-                  src={v}
-                  className="w-full h-32 rounded"
-                  controls
-                />
+              {videos.map((v, i) => (
+                <div key={i} className="relative">
+                  <video src={v} className="w-full h-32 rounded" controls />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setVideos((prev) => prev.filter((_, idx) => idx !== i))
+                    }
+                    className="absolute top-1 right-1 bg-black/60 text-white p-1 rounded"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               ))}
+
+              <label className="h-32 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100">
+                <Upload className="w-6 h-6 text-gray-500" />
+                <input
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="video/*"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files);
+                    const urls = files.map((f) => URL.createObjectURL(f));
+                    setVideos((prev) => [...prev, ...urls]);
+                    setNewVideoFiles((prev) => [...prev, ...files]);
+                  }}
+                />
+              </label>
             </div>
           </div>
 

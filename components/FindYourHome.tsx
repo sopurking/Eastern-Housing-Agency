@@ -270,47 +270,36 @@ const FindYourHome = () => {
   const typeRef = useRef<HTMLDivElement | null>(null);
   const priceRef = useRef<HTMLDivElement | null>(null);
 
-  // NEW: modal moved to this level
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
+
+  const [showAll, setShowAll] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  const [screenWidth, setScreenWidth] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('🚀 Fetching properties and locations...');
       try {
         const { getProperties, getLocations } = await import('@/lib/actions/listings.actions');
-        
         const [propertiesResult, locationsResult] = await Promise.all([
           getProperties({ featured: true, status: 'active' }),
           getLocations()
         ]);
-        
-        console.log('📋 Properties result:', propertiesResult);
-        console.log('🗺️ Locations result:', locationsResult);
-        
+
         if (propertiesResult.success && propertiesResult.properties) {
-          console.log('🏠 Setting properties:', propertiesResult.properties.length, 'properties');
-          propertiesResult.properties.forEach((prop: any, index: number) => {
-            console.log(`Property ${index + 1}:`, {
-              id: prop.id,
-              title: prop.title,
-              images: prop.images,
-              videos: prop.videos,
-              imagesType: typeof prop.images,
-              videosType: typeof prop.videos
-            });
-          });
           setProperties(propertiesResult.properties as Property[]);
         }
-        
+
         if (locationsResult.success && locationsResult.locations) {
           setLocations(locationsResult.locations);
         }
       } catch (error) {
-        console.error('💥 Error fetching data:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
@@ -321,16 +310,23 @@ const FindYourHome = () => {
 
   const priceRanges = useMemo(() => {
     if (properties.length === 0) return [];
+
     const prices = properties.map(p => p.price).sort((a, b) => a - b);
-    const max = prices[prices.length - 1];
-    
-    const ranges = [];
-    if (max > 0) ranges.push({ key: '0-50m', label: '₦0 - ₦50M', min: 0, max: 50_000_000 });
-    if (max > 50_000_000) ranges.push({ key: '50m-100m', label: '₦50M - ₦100M', min: 50_000_000, max: 100_000_000 });
-    if (max > 100_000_000) ranges.push({ key: '100m-200m', label: '₦100M - ₦200M', min: 100_000_000, max: 200_000_000 });
-    if (max > 200_000_000) ranges.push({ key: '200m+', label: '₦200M+', min: 200_000_000 });
-    
-    return ranges;
+    const maxPrice = prices[prices.length - 1];
+
+    const allRanges = [
+      { key: '0-100k', label: '0 - 100k NGN', min: 0, max: 100_000 },
+      { key: '100k-500k', label: '100k - 500k NGN', min: 100_000, max: 500_000 },
+      { key: '500k-1m', label: '500k - 1M NGN', min: 500_000, max: 1_000_000 },
+      { key: '1m-5m', label: '1M - 5M NGN', min: 1_000_000, max: 5_000_000 },
+      { key: '5m-10m', label: '5M - 10M NGN', min: 5_000_000, max: 10_000_000 },
+      { key: '10m-20m', label: '10M - 20M NGN', min: 10_000_000, max: 20_000_000 },
+      { key: '20m-50m', label: '20M - 50M NGN', min: 20_000_000, max: 50_000_000 },
+      { key: '50m-100m', label: '50M - 100M NGN', min: 50_000_000, max: 100_000_000 },
+      { key: '100m+', label: '100M+ NGN', min: 100_000_000 },
+    ];
+
+    return allRanges.filter(r => (r.max && r.min <= maxPrice) || (!r.max && r.min <= maxPrice));
   }, [properties]);
 
   useEffect(() => {
@@ -366,6 +362,24 @@ const FindYourHome = () => {
     });
   }, [properties, selectedState, selectedCity, propertyType, priceRange, priceRanges]);
 
+  useEffect(() => {
+    const updateWidth = () => setScreenWidth(window.innerWidth);
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  useEffect(() => {
+    const updateLimit = () => {
+      if (screenWidth < 640) {
+        setVisibleCount(showAll ? filtered.length : 3);
+      } else {
+        setVisibleCount(showAll ? filtered.length : 6);
+      }
+    };
+    updateLimit();
+  }, [screenWidth, showAll, filtered.length]);
+
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => {
       const next = new Set(prev);
@@ -380,6 +394,8 @@ const FindYourHome = () => {
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
 
       <div className="max-w-[1300px] mx-auto px-6 relative z-10">
+
+        {/* HEADER / FILTER WRAPPER */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -676,30 +692,31 @@ const FindYourHome = () => {
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filtered.map((property) => (
+              {filtered.slice(0, visibleCount).map((property) => (
                 <PropertyCard 
-                  key={property.id} 
-                  property={property} 
-                  favorites={favorites} 
-                  toggleFavorite={toggleFavorite} 
+                  key={property.id}
+                  property={property}
+                  favorites={favorites}
+                  toggleFavorite={toggleFavorite}
                   onOpenInspection={() => setActiveProperty(property)}
                 />
               ))}
             </div>
           )}
 
-          <div className="text-center mt-10">
-            <button
-              onClick={() => router.push('/properties')}
-              className="bg-[#0d2549] hover:bg-[#0b1f3e] text-white px-6 py-3 rounded-md font-semibold"
-            >
-              See More
-            </button>
-          </div>
+          {filtered.length > (screenWidth < 640 ? 3 : 6) && (
+            <div className="text-center mt-10">
+              <button
+                onClick={() => setShowAll((prev) => !prev)}
+                className="bg-[#0d2549] hover:bg-[#0b1f3e] text-white px-6 py-3 rounded-md font-semibold"
+              >
+                {showAll ? "See Less" : "See More"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ROOT-LEVEL INSPECTION MODAL */}
       {activeProperty && (
         <InspectionModal 
           isOpen={true}
@@ -707,9 +724,9 @@ const FindYourHome = () => {
           property={activeProperty}
         />
       )}
-
     </section>
   );
 };
+
 
 export default FindYourHome;

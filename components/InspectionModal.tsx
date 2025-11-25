@@ -103,7 +103,7 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
                 ) : videos.length > 0 ? (
                   <video
                     src={videos[0]}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     controls
                     muted
                     autoPlay
@@ -201,13 +201,13 @@ const InspectionModal: React.FC<InspectionModalProps> = ({
             {/* Inspection Fee Section */}
             <div className="p-6 border-t bg-gray-50 rounded-b-2xl">
               <p className="text-gray-700 text-sm mb-4">
-                An inspection fee of{" "}
+                Your {" "}
                 <strong className="text-gray-900">
                   ₦{inspectionFee.toLocaleString()}
                 </strong>{" "}
-                is required to schedule a physical inspection. This fee is
-                refundable and will be deducted from your deposit if you proceed
-                with the property.
+                inspection fee gives you full access to verified houses.
+Once payment is made, our customer service team will call you immediately to confirm your appointment. Then, our company vehicle picks you up at your location for a smooth inspection experience.
+If the house isn't what you want, we;ll take you to see more verified houses at no extra cost until you find the home you love.
               </p>
 
               <button

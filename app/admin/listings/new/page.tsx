@@ -217,20 +217,16 @@ export default function NewListingPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Property Type</label>
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-              >
-                <option value="">Select Type</option>
-                {PROPERTY_TYPES.map(type => (
-                  <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </option>
-                ))}
-              </select>
+             <input
+  type="text"
+  name="type"
+  value={formData.type}
+  onChange={handleInputChange}
+  required
+  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+  placeholder="e.g., Duplex, Apartment, Bungalow, Penthouse"
+/>
+
             </div>
           </div>
 
@@ -253,35 +249,30 @@ export default function NewListingPage() {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-              <select
-                name="state"
-                value={formData.state}
-                onChange={handleStateChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
-              >
-                <option value="">Select State</option>
-                {EASTERN_STATES.map(({ state }) => (
-                  <option key={state} value={state}>{state}</option>
-                ))}
-              </select>
+              <input
+  type="text"
+  name="state"
+  value={formData.state}
+  onChange={handleInputChange}
+  required
+  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+  placeholder="e.g., Enugu, Anambra, Lagos, Abuja"
+/>
+
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-              <select
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                required
-                disabled={!formData.state}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-600"
-              >
-                <option value="">Select City</option>
-                {selectedStateData?.cities.map(city => (
-                  <option key={city} value={city}>{city}</option>
-                ))}
-              </select>
+              <input
+  type="text"
+  name="city"
+  value={formData.city}
+  onChange={handleInputChange}
+  required
+  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600"
+  placeholder="e.g., Enugu, Awka, Aba, Lekki, Maitama"
+/>
+
             </div>
           </div>
 
