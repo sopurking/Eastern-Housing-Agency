@@ -90,3 +90,17 @@ model Property {
   @@index([type])
   @@index([status])
 }
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  userId    String?
+  userRole  String?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  
+  @@index([createdAt])
+  @@index([userId])
+  @@index([path])
+}

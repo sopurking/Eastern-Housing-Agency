@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from 'next-auth/react';
-import GoogleOneTap from './GoogleOneTap';
+// import GoogleOneTap from './GoogleOneTap';
 
 interface ClientWrapperProps {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ interface ClientWrapperProps {
 export default function ClientWrapper({ children }: ClientWrapperProps) {
   return (
     <SessionProvider>
-      <GoogleOneTap />
+      {/* <GoogleOneTap /> */}
       {children}
     </SessionProvider>
   );

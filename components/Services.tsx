@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Building, Key, Home, Wrench, ShieldCheck } from "lucide-react";
+import { Building, Key, Home, Wrench, ShieldCheck, Megaphone } from "lucide-react";
 
 const services = [
   {
@@ -29,6 +29,11 @@ const services = [
     icon: <ShieldCheck className="w-8 h-8 text-[#2da3dd]" />,
     title: "Legal & Documentation",
     desc: "From land verification to legal paperwork, our experts ensure safe and stress-free ownership.",
+  },
+  {
+    icon: <Megaphone className="w-8 h-8 text-[#2da3dd]" />,
+    title: "Property Marketing & Listing",
+    desc: "Professional marketing, photography, and listings that ensure your property reaches the right buyers quickly.",
   },
 ];
 

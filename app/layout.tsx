@@ -3,6 +3,7 @@ import "./globals.css";
 import { Poppins, Playfair_Display } from "next/font/google";
 import Script from "next/script"; 
 import Providers from "@/components/Providers";
+import PageTracker from "@/components/PageTracker";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,14 +27,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${poppins.variable} ${playfair.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Script
+        {/* <Script
           src="https://accounts.google.com/gsi/client"
           async
           defer
-        />
+        /> */}
       </head>
-      <body className="font-sans overflow-x-hidden">
-        <Providers>{children}</Providers>
+      <body className="font-sans">
+        <Providers>
+          <PageTracker />
+          {children}
+        </Providers>
       </body>
     </html>
   );

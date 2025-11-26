@@ -190,7 +190,7 @@ export default function TermsOfService() {
   const lastUpdated = "Last updated: Nov 2025";
 
   return (
-    <section className="relative py-16 md:py-20 bg-gray-50 w-full overflow-hidden">
+    <section className="relative py-16 md:py-20 bg-gray-50 w-full">
       <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-[#2da3dd]/10 blur-3xl pointer-events-none hidden sm:block" />
       <div className="absolute -bottom-16 -left-16 h-72 w-72 rounded-full bg-[#1e55a7]/10 blur-3xl pointer-events-none hidden sm:block" />
 
@@ -201,7 +201,7 @@ export default function TermsOfService() {
             Terms of Service
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#0d2549] mt-4 tracking-tight">
-            Clear, Fair, and Stress‑Free Renting
+            Clear, Fair, and Stress-Free Renting
           </h1>
           <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
             Please review these terms carefully. They protect renters, landlords, and our company.
@@ -210,7 +210,7 @@ export default function TermsOfService() {
         </header>
 
         {/* Two-column layout */}
-        <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0 overflow-x-hidden">
+       <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0">
           {/* TOC */}
           <aside className="lg:col-span-4 xl:col-span-3 min-w-0">
             {/* Mobile TOC toggle */}

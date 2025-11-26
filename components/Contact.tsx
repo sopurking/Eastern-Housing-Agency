@@ -28,7 +28,7 @@ const Contact = () => {
             Get In Touch
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
-            Let’s <span className="text-[#2da3dd]">Connect</span> With You
+            Let's <span className="text-[#2da3dd]">Connect</span> With You
           </h2>
           <p className="text-gray-300 mt-4 max-w-xl mx-auto">
             Reach out through any of the platforms below — we’d love to help
@@ -75,9 +75,9 @@ const Contact = () => {
               <Mail className="w-6 h-6 text-[#2da3dd]" />
             </a>
             <h3 className="font-semibold text-lg mb-1">Email Us</h3>
-            <p className="text-gray-400">easternhousingagency@gmail.com</p>
+            <p className="text-gray-400">info@easternhousingagency.com</p>
             <a
-              href="mailto:easternhousingagency@gmail.com"
+              href="mailto:info@easternhousingagency.com"
               className="mt-3 bg-[#2da3dd] hover:bg-[#154760] text-white px-6 py-2 rounded-lg font-semibold text-sm transition"
             >
               Send Email

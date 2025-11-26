@@ -208,7 +208,7 @@ export default function PrivacyPolicy() {
   const lastUpdated = "Last updated: Nov 2025";
 
   return (
-    <section className="relative py-16 md:py-20 bg-gray-50 w-full overflow-hidden">
+    <section className="relative py-16 md:py-20 bg-gray-50 w-full">
       <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-[#2da3dd]/10 blur-3xl pointer-events-none hidden sm:block" />
       <div className="absolute -bottom-16 -left-16 h-72 w-72 rounded-full bg-[#1e55a7]/10 blur-3xl pointer-events-none hidden sm:block" />
 
@@ -228,7 +228,7 @@ export default function PrivacyPolicy() {
         </header>
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0 overflow-x-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 min-w-0">
           {/* TOC */}
           <aside className="lg:col-span-4 xl:col-span-3 min-w-0">
             {/* Mobile TOC toggle */}

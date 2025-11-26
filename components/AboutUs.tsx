@@ -95,7 +95,7 @@ const AboutUs = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-[#2da3dd] hover:bg-[#2da3dd] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-fit max-sm:w-full"
-              onClick={()=>handleScroll("MeetTheTeam")}
+              onClick={()=>handleScroll("contact")}
             >
               Learn More
             </motion.button>

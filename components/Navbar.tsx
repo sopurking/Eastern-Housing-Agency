@@ -64,8 +64,8 @@ const Navbar = () => {
           {/* Mobile Layout */}
           <div className="flex lg:hidden items-center justify-between h-20">
             <motion.div whileHover={{ scale: 1.05 }} className="flex gap-3 items-center cursor-pointer">
-              <img src="/logo-transparent.png" alt="Eastern Housing Logo" className="h-20 w-auto rounded-full" />
-              <span className={`${isScrolled ? "text-gray-900" : "text-white"} text-lg font-bold`}>
+              <img src="/logo-transparent.png" alt="Eastern Housing Logo" className="h-10 w-auto rounded-full" />
+              <span className={`${isScrolled ? "text-gray-900" : "text-white"} sm:text-sm md:text-lg font-bold`}>
                 Eastern Housing Agency
               </span>
             </motion.div>
@@ -100,7 +100,15 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`font-medium transition-colors relative group ${
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const section = document.querySelector(link.href);
+                    if (section) {
+                      const offsetTop = section.getBoundingClientRect().top + window.pageYOffset - 80;
+                      window.scrollTo({ top: offsetTop, behavior: "smooth" });
+                    }
+                  }}
+                  className={`font-medium transition-colors relative group cursor-pointer ${
                     isScrolled ? "text-gray-700 hover:text-white" : "text-white hover:text-white"
                   }`}
                 >
@@ -212,8 +220,18 @@ const Navbar = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-4 py-3 text-gray-700 hover:bg-gray-200 hover:text-[#0d2549] rounded-lg font-medium transition-colors"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsMobileMenuOpen(false);
+                        setTimeout(() => {
+                          const section = document.querySelector(link.href);
+                          if (section) {
+                            const offsetTop = section.getBoundingClientRect().top + window.pageYOffset - 80;
+                            window.scrollTo({ top: offsetTop, behavior: "smooth" });
+                          }
+                        }, 300);
+                      }}
+                      className="block px-4 py-3 text-gray-700 hover:bg-gray-200 hover:text-[#0d2549] rounded-lg font-medium transition-colors cursor-pointer"
                     >
                       {link.name}
                     </motion.a>
@@ -224,11 +242,11 @@ const Navbar = () => {
                 <div className="space-y-3 mb-8 px-4">
                   <div className="flex items-center gap-3 text-gray-600">
                     <Phone className="w-5 h-5 text-[#0d2549]" />
-                    <span className="text-sm">+234 (0) 123 456 7890</span>
+                    <span className="text-sm">+234 805 776 6616</span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600">
                     <Mail className="w-5 h-5 text-[#0d2549]" />
-                    <span className="text-sm">info@dreamhome.com</span>
+                    <span className="text-sm">info@easternhousingagency.com</span>
                   </div>
                 </div>
 
