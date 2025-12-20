@@ -336,7 +336,7 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
               </label>
             </div>
 
-            <h3 className="font-medium text-gray-700 mt-4 mb-2">Videos</h3>
+            <h3 className="font-medium text-gray-700 mt-4 mb-2">Videos (Max 2, under 3 mins each) - {videos.length}/2</h3>
 
             <div className="grid grid-cols-2 gap-3">
               {videos.map((v, i) => (
@@ -354,21 +354,47 @@ export default function PropertyModal({ open, onClose, property, onUpdated }) {
                 </div>
               ))}
 
-              <label className="h-32 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100">
-                <Upload className="w-6 h-6 text-gray-500" />
-                <input
-                  type="file"
-                  className="hidden"
-                  multiple
-                  accept="video/*"
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files);
-                    const urls = files.map((f) => URL.createObjectURL(f));
-                    setVideos((prev) => [...prev, ...urls]);
-                    setNewVideoFiles((prev) => [...prev, ...files]);
-                  }}
-                />
-              </label>
+              {videos.length < 2 && (
+                <label className="h-32 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100">
+                  <Upload className="w-6 h-6 text-gray-500" />
+                  <input
+                    type="file"
+                    className="hidden"
+                    multiple
+                    accept="video/*"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      
+                      // Check if adding these files would exceed the limit
+                      if (videos.length + files.length > 2) {
+                        alert('Maximum 2 videos allowed per listing');
+                        return;
+                      }
+                      
+                      // Check video duration
+                      files.forEach(file => {
+                        const videoElement = document.createElement('video');
+                        videoElement.preload = 'metadata';
+                        
+                        videoElement.onloadedmetadata = function() {
+                          window.URL.revokeObjectURL(videoElement.src);
+                          const duration = videoElement.duration;
+                          
+                          if (duration > 180) {
+                            alert(`Video "${file.name}" exceeds 3 minutes. Please upload videos under 3 minutes.`);
+                          } else {
+                            const url = URL.createObjectURL(file);
+                            setVideos((prev) => [...prev, url]);
+                            setNewVideoFiles((prev) => [...prev, file]);
+                          }
+                        };
+                        
+                        videoElement.src = URL.createObjectURL(file);
+                      });
+                    }}
+                  />
+                </label>
+              )}
             </div>
           </div>
 

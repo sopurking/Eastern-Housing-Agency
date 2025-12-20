@@ -291,6 +291,7 @@ const FindYourHome = () => {
         }
 
         if (locationsResult.success && locationsResult.locations) {
+          console.log('📍 Locations received:', locationsResult.locations);
           setLocations(locationsResult.locations);
         }
       } catch (error) {
@@ -304,8 +305,16 @@ const FindYourHome = () => {
   }, []);
 
   const availableTypes = useMemo(() => {
-    const types = new Set(properties.map(p => p.type));
-    return Array.from(types).sort();
+    const rawTypes = properties.map(p => p.type);
+    console.log('🏠 Raw property types:', rawTypes);
+    
+    const trimmedTypes = rawTypes.map(t => t.trim().toLowerCase());
+    console.log('✂️ Trimmed & lowercased types:', trimmedTypes);
+    
+    const uniqueTypes = Array.from(new Set(trimmedTypes)).sort();
+    console.log('✅ Unique types:', uniqueTypes);
+    
+    return uniqueTypes;
   }, [properties]);
 
   const priceRanges = useMemo(() => {
@@ -350,7 +359,7 @@ const FindYourHome = () => {
     return properties.filter((p) => {
       if (selectedCity && p.city.toLowerCase() !== selectedCity.toLowerCase()) return false;
       if (!selectedCity && selectedState && p.state.toLowerCase() !== selectedState.toLowerCase()) return false;
-      if (propertyType && p.type !== propertyType) return false;
+      if (propertyType && p.type.trim().toLowerCase() !== propertyType.toLowerCase()) return false;
       if (priceRange) {
         const range = priceRanges.find((r) => r.key === priceRange);
         if (range) {
@@ -589,7 +598,7 @@ const FindYourHome = () => {
                         <li key={t}>
                           <button
                             className={`w-full text-left px-3 py-2 rounded-md text-sm transition hover:bg-gray-50 ${
-                              propertyType === t
+                              propertyType.toLowerCase() === t
                                 ? 'bg-[#2da3dd]/10 text-[#0d2549] font-medium'
                                 : 'text-gray-700'
                             }`}

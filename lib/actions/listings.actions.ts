@@ -238,21 +238,27 @@ export async function getLocations() {
         state: true,
         city: true,
       },
+      distinct: ['state', 'city'],
     });
 
     const locationMap = new Map<string, Set<string>>();
     
     properties.forEach(({ state, city }) => {
-      if (!locationMap.has(state)) {
-        locationMap.set(state, new Set());
+      const trimmedState = state.trim();
+      const trimmedCity = city.trim();
+      
+      if (!locationMap.has(trimmedState)) {
+        locationMap.set(trimmedState, new Set());
       }
-      locationMap.get(state)!.add(city);
+      locationMap.get(trimmedState)!.add(trimmedCity);
     });
 
     const locations = Array.from(locationMap.entries()).map(([state, cities]) => ({
       state,
       cities: Array.from(cities).sort(),
     })).sort((a, b) => a.state.localeCompare(b.state));
+
+    console.log('📍 Unique locations:', JSON.stringify(locations, null, 2));
 
     return { success: true, locations };
   } catch (error) {

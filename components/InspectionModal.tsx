@@ -211,7 +211,10 @@ If the house isn't what you want, we;ll take you to see more verified houses at 
               </p>
 
               <button
-                onClick={() => alert("Paystack coming soon!")}
+                onClick={() => {
+                  const message = `Hi, I would like to book an inspection for the property: ${property.title} located at ${property.location}. The inspection fee is ₦${inspectionFee.toLocaleString()}.`;
+                  window.open(`https://api.whatsapp.com/send?phone=2348057766616&text=${encodeURIComponent(message)}`, '_blank');
+                }}
                 className="w-full bg-[#2da3dd] hover:bg-[#2095ce] text-white py-4 rounded-xl text-lg font-semibold transition"
               >
                 Pay Inspection Fee (₦{inspectionFee.toLocaleString()})

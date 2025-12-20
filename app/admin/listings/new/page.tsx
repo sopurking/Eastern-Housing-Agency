@@ -64,14 +64,46 @@ export default function NewListingPage() {
 
   const handleVideoUpload = (e) => {
     const files = Array.from(e.target.files || []);
-    setVideos(prev => [...prev, ...files]);
+    
+    // Check if adding these files would exceed the limit
+    if (videos.length + files.length > 2) {
+      alert('Maximum 2 videos allowed per listing');
+      return;
+    }
+    
+    // Check video duration (max 3 minutes = 180 seconds)
+    const validFiles = [];
+    let hasInvalidVideo = false;
     
     files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setVideoPreviews(prev => [...prev, e.target?.result]);
+      const videoElement = document.createElement('video');
+      videoElement.preload = 'metadata';
+      
+      videoElement.onloadedmetadata = function() {
+        window.URL.revokeObjectURL(videoElement.src);
+        const duration = videoElement.duration;
+        
+        if (duration > 180) {
+          hasInvalidVideo = true;
+          alert(`Video "${file.name}" exceeds 3 minutes. Please upload videos under 3 minutes.`);
+        } else {
+          validFiles.push(file);
+          
+          if (validFiles.length === files.length && !hasInvalidVideo) {
+            setVideos(prev => [...prev, ...validFiles]);
+            
+            validFiles.forEach(validFile => {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                setVideoPreviews(prev => [...prev, e.target?.result]);
+              };
+              reader.readAsDataURL(validFile);
+            });
+          }
+        }
       };
-      reader.readAsDataURL(file);
+      
+      videoElement.src = URL.createObjectURL(file);
     });
   };
 
@@ -508,8 +540,8 @@ export default function NewListingPage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3">
                 <Video className="w-4 h-4 text-pink-600" />
-                Property Videos (Optional)
-                <span className="text-xs text-gray-500 font-normal">({videos.length} uploaded)</span>
+                Property Videos (Optional - Max 2, under 3 mins each)
+                <span className="text-xs text-gray-500 font-normal">({videos.length}/2 uploaded)</span>
               </label>
               
               <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 hover:border-purple-400 transition-colors bg-gray-50">
@@ -520,13 +552,16 @@ export default function NewListingPage() {
                   onChange={handleVideoUpload}
                   className="hidden"
                   id="video-upload"
+                  disabled={videos.length >= 2}
                 />
-                <label htmlFor="video-upload" className="cursor-pointer flex flex-col items-center">
+                <label htmlFor="video-upload" className={`cursor-pointer flex flex-col items-center ${videos.length >= 2 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                   <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-3">
                     <Upload className="w-8 h-8 text-purple-600" />
                   </div>
-                  <span className="text-sm font-semibold text-gray-900 mb-1">Click to upload videos</span>
-                  <span className="text-xs text-gray-500">MP4, MOV up to 50MB each</span>
+                  <span className="text-sm font-semibold text-gray-900 mb-1">
+                    {videos.length >= 2 ? 'Maximum videos reached' : 'Click to upload videos'}
+                  </span>
+                  <span className="text-xs text-gray-500">MP4, MOV - Max 2 videos, under 3 mins each</span>
                 </label>
               </div>
               

@@ -1,10 +1,12 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, ArrowRight, Play } from 'lucide-react';
+import { Home, ArrowRight, Play, X } from 'lucide-react';
 
 const HeroSection = () => {
+  const [showVideo, setShowVideo] = useState(false);
+
   const handleScroll = (id: any) => {
   const section = document.getElementById(id);
   if (section) {
@@ -78,6 +80,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-2xl border border-white/20 transition"
+                onClick={() => setShowVideo(true)}
               >
                 <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#0d2549]]" />
                 Watch Video
@@ -122,6 +125,26 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {showVideo && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setShowVideo(false)}>
+          <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <video
+              src="/videos/intro.mp4"
+              className="w-full rounded-lg"
+              controls
+              autoPlay
+            />
+          </div>
+        </div>
+      )}
 
       {/* Scroll Indicator */}
       <motion.div

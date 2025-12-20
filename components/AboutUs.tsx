@@ -1,21 +1,22 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 
 const AboutUs = () => {
+  const [showVideo, setShowVideo] = useState(false);
 
-    const handleScroll = (id: any) => {
-  const section = document.getElementById(id);
-  if (section) {
-    const offsetTop = section.offsetTop - 80; // adjust offset for navbar height
-    window.scrollTo({
-      top: offsetTop,
-      behavior: "smooth",
-    });
-  }
- };
+  const handleScroll = (id: any) => {
+    const section = document.getElementById(id);
+    if (section) {
+      const offsetTop = section.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-white" id='about'>
@@ -33,30 +34,13 @@ const AboutUs = () => {
             transition={{ duration: 0.6 }}
             className="relative h-full"
           >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl group h-[400px] md:h-[450px] lg:h-[520px]">
-              {/* Video Thumbnail */}
-              <img
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop"
-                alt="About our company"
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] md:h-[450px] lg:h-[520px]">
+              <video
+                src="/videos/intro.mp4"
                 className="w-full h-full object-cover"
+                controls
+                poster="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop"
               />
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/30 to-transparent"></div>
-              
-              {/* Play Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:bg-[#0d2549] transition-all duration-300"
-              >
-                <Play className="w-7 h-7 md:w-9 md:h-9 text-[#0d2549] group-hover:text-white ml-1 transition-colors duration-300" fill="currentColor" />
-              </motion.button>
-              
-              {/* Video Label */}
-              <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full">
-                <span className="text-sm font-semibold text-gray-900">Watch Our Story</span>
-              </div>
             </div>
           </motion.div>
 
@@ -102,6 +86,26 @@ const AboutUs = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {showVideo && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setShowVideo(false)}>
+          <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <video
+              src="/videos/intro.mp4"
+              className="w-full rounded-lg"
+              controls
+              autoPlay
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
