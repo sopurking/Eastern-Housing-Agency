@@ -144,6 +144,13 @@ export default function NewListingPage() {
           body: uploadFormData
         });
         
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error(`❌ Non-JSON response for ${image.name}:`, text);
+          throw new Error(`Upload failed: Server returned non-JSON response`);
+        }
+        
         if (!response.ok) {
           const errorData = await response.json();
           console.error(`❌ Image upload failed for ${image.name}:`, errorData);
@@ -171,6 +178,13 @@ export default function NewListingPage() {
           method: 'POST',
           body: uploadFormData
         });
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error(`❌ Non-JSON response for ${video.name}:`, text);
+          throw new Error(`Upload failed: Server returned non-JSON response`);
+        }
         
         if (!response.ok) {
           const errorData = await response.json();
