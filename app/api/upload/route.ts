@@ -7,7 +7,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const maxDuration = 300; // 5 minutes for video uploads
+export const config = {
+  api: {
+    bodyParser: false,
+    responseLimit: false,
+  },
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +24,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Sanitize filename
     const sanitizedName = file.name
       .replace(/[^a-zA-Z0-9.-]/g, '_')
       .replace(/_+/g, '_')
@@ -29,25 +33,20 @@ export async function POST(request: NextRequest) {
     console.log('Sanitized filename:', sanitizedName);
     console.log('File size:', (file.size / (1024 * 1024)).toFixed(2), 'MB');
 
-    // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Determine resource type
     const isVideo = file.type.startsWith('video/');
 
-    // Upload to Cloudinary with extended timeout for videos
     const result = await new Promise((resolve, reject) => {
       const uploadOptions: any = {
         folder,
         public_id: `${folder}_${Date.now()}_${sanitizedName.split('.')[0]}`,
         resource_type: 'auto',
-        timeout: 300000, // 5 minutes
+        timeout: 300000,
       };
 
-      // For videos, add chunk size to handle large files better
       if (isVideo) {
-        uploadOptions.chunk_size = 6000000; // 6MB chunks
+        uploadOptions.chunk_size = 6000000;
       }
 
       cloudinary.uploader.upload_stream(
