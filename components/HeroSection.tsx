@@ -163,6 +163,7 @@ const HeroSection = () => {
             <div className="w-1 h-2 bg-white/60 rounded-full"></div>
           </motion.div>
         </div>
+        
       </motion.div>
     </div>
   );
