@@ -5,6 +5,7 @@ import AboutUs from "@/components/AboutUs";
 import HowItWorks from "@/components/HowItWorks";
 import FindYourHome from "@/components/FindYourHome";
 import Services from "@/components/Services";
+import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import PrivacyPolicy from "@/components/PrivacyPolicy";
 import PropertyListings from "@/components/PropertyListings";
@@ -23,6 +24,7 @@ export default async function Home() {
       <AboutUs />
       <HowItWorks />
       <Services />
+      <Testimonials />
       <FindYourHome />
       <LandlordCTA/>
       <TermsOfService />

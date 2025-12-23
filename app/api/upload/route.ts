@@ -14,6 +14,9 @@ export const config = {
   },
 };
 
+export const maxDuration = 300;
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();

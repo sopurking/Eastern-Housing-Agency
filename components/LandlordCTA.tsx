@@ -11,7 +11,7 @@ const SECONDARY_COLOR = '#2da3dd'; // Light Blue
 const LandlordCTA: React.FC = () => {
 
     const WHATSAPP_NUMBER = '+2348057766616'; // Replace with your agency's number (e.g., 1234567890)
-const PRE_FILLED_MESSAGE = "Hi, I am a landlord and will like to lease my house";
+const PRE_FILLED_MESSAGE = "Hi, I am a landlord and will like to List my house";
 
 const handleListProperties = () => {
     const encodedMessage = encodeURIComponent(PRE_FILLED_MESSAGE);
@@ -40,7 +40,7 @@ const handleListProperties = () => {
                     
                     {/* Main Headline */}
                     <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3 tracking-tight">
-                        Are you a Landlord? Lease your house
+                        Are you a Landlord? List your house
                     </h2>
                     
                     {/* Supporting Text */}
@@ -56,7 +56,7 @@ const handleListProperties = () => {
                         className={`inline-flex items-center justify-center bg-[#2da3dd] text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 hover:bg-[#278fbe] focus-visible:ring-2 focus-visible:ring-white/60`}
                     >
                         <Key className="w-5 h-5 mr-2" />
-                        Lease Properties
+                        List Properties
                     </motion.button>
 
                 </motion.div>
