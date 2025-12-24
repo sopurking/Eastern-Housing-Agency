@@ -22,8 +22,8 @@ export default function MiniBrowserAuth({ isOpen, onClose, onSuccess }: MiniBrow
       
       if (event.data.type === 'AUTH_SUCCESS') {
         console.log('[MiniBrowser] Authentication successful:', event.data.user);
-        onSuccess?.();
         onClose();
+        // Reload page to update session and UI
         setTimeout(() => window.location.reload(), 500);
       } else if (event.data.type === 'AUTH_ERROR') {
         console.error('[MiniBrowser] Authentication error:', event.data.error);

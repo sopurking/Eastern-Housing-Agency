@@ -1,8 +1,11 @@
 "use client";
 
 import FindYourHome from "@/components/FindYourHome";
+import MiniBrowserAuth from "@/components/MiniBrowserAuth";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 interface Property {
@@ -15,6 +18,16 @@ interface Property {
 
 export default function AllPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Comprehensive logging
+  useEffect(() => {
+    console.log('[PropertiesPage] Auth Status:', status);
+    console.log('[PropertiesPage] Session:', session);
+    console.log('[PropertiesPage] User:', session?.user);
+  }, [status, session]);
 
   useEffect(() => {
     const mockData: Property[] = [
@@ -27,6 +40,32 @@ export default function AllPropertiesPage() {
     ];
     setProperties(mockData);
   }, []);
+
+  const handleBookInspection = (propertyId: string) => {
+    console.log('[BookInspection] Button clicked for property:', propertyId);
+    console.log('[BookInspection] Current auth status:', status);
+    console.log('[BookInspection] Session exists:', !!session);
+    
+    if (status === "loading") {
+      console.log('[BookInspection] Auth still loading, please wait...');
+      return;
+    }
+    
+    if (!session || status === "unauthenticated") {
+      console.log('[BookInspection] User NOT authenticated - opening auth popup');
+      sessionStorage.setItem('bookingPropertyId', propertyId);
+      sessionStorage.setItem('bookingAction', 'inspection');
+      setShowAuthPopup(true);
+    } else {
+      console.log('[BookInspection] User IS authenticated - proceeding with booking');
+      alert(`Booking inspection for property ${propertyId}`);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    console.log('[BookInspection] Auth successful');
+    setShowAuthPopup(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6 md:px-16">
@@ -64,6 +103,7 @@ export default function AllPropertiesPage() {
 
               <div>
                 <button
+                  onClick={() => handleBookInspection(property.id)}
                   className="bg-[#2da3dd] hover:bg-[#2da3dd] text-white text-sm px-4 py-2 rounded-lg transition mr-3"
                 >
                   Book Inspection
@@ -86,6 +126,16 @@ export default function AllPropertiesPage() {
           No properties available right now.
         </p>
       )}
+
+      {/* Authentication Popup */}
+      <MiniBrowserAuth
+        isOpen={showAuthPopup}
+        onClose={() => {
+          console.log('[BookInspection] Auth popup closed');
+          setShowAuthPopup(false);
+        }}
+        onSuccess={handleAuthSuccess}
+      />
     </div>
   );
 }

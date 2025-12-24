@@ -18,7 +18,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import InspectionModal from './InspectionModal';
+import MiniBrowserAuth from './MiniBrowserAuth';
 
 type Property = {
   id: string;
@@ -251,6 +253,7 @@ const PropertyCard = ({
 --------------------------------------------------------- */
 const FindYourHome = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [properties, setProperties] = useState<Property[]>([]);
   const [locations, setLocations] = useState<{ state: string; cities: string[] }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -271,11 +274,20 @@ const FindYourHome = () => {
   const priceRef = useRef<HTMLDivElement | null>(null);
 
   const [activeProperty, setActiveProperty] = useState<Property | null>(null);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [pendingPropertyId, setPendingPropertyId] = useState<string | null>(null);
 
   const [showAll, setShowAll] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
 
   const [screenWidth, setScreenWidth] = useState(0);
+
+  // Comprehensive auth logging
+  useEffect(() => {
+    console.log('[FindYourHome] Auth Status:', status);
+    console.log('[FindYourHome] Session:', session);
+    console.log('[FindYourHome] User:', session?.user);
+  }, [status, session]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -395,6 +407,29 @@ const FindYourHome = () => {
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
+  };
+
+  // Handle book inspection with auth check
+  const handleBookInspection = (property: Property) => {
+    console.log('[BookInspection] Button clicked for property:', property.id);
+    console.log('[BookInspection] Current auth status:', status);
+    console.log('[BookInspection] Session exists:', !!session);
+    console.log('[BookInspection] User:', session?.user);
+
+    if (status === "loading") {
+      console.log('[BookInspection] Auth still loading, please wait...');
+      return;
+    }
+
+    if (!session || status === "unauthenticated") {
+      console.log('[BookInspection] User NOT authenticated - opening auth popup');
+      sessionStorage.setItem('bookingPropertyId', property.id);
+      sessionStorage.setItem('bookingAction', 'inspection');
+      setShowAuthPopup(true);
+    } else {
+      console.log('[BookInspection] User IS authenticated - opening modal');
+      setActiveProperty(property);
+    }
   };
 
   return (
@@ -707,7 +742,7 @@ const FindYourHome = () => {
                   property={property}
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
-                  onOpenInspection={() => setActiveProperty(property)}
+                  onOpenInspection={() => handleBookInspection(property)}
                 />
               ))}
             </div>
@@ -733,6 +768,15 @@ const FindYourHome = () => {
           property={activeProperty}
         />
       )}
+
+      {/* Authentication Popup */}
+      <MiniBrowserAuth
+        isOpen={showAuthPopup}
+        onClose={() => {
+          console.log('[BookInspection] Auth popup closed');
+          setShowAuthPopup(false);
+        }}
+      />
     </section>
   );
 };

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Home, Users, BarChart2, Settings, X, Menu } from "lucide-react";
+import { LayoutDashboard, Home, Users, BarChart2, Settings, X, Menu, MessageSquare } from "lucide-react";
 
 export default function AdminSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
@@ -12,6 +12,7 @@ export default function AdminSidebar({ open, onClose }: { open: boolean; onClose
     { href: "/admin", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
     { href: "/admin/listings", label: "Listings", icon: <Home className="w-5 h-5" /> },
     { href: "/admin/users", label: "Users", icon: <Users className="w-5 h-5" /> },
+    { href: "/admin/testimonials", label: "Testimonials", icon: <MessageSquare className="w-5 h-5" /> },
     { href: "/admin/analytics", label: "Analytics", icon: <BarChart2 className="w-5 h-5" /> },
     { href: "/admin/settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
   ];

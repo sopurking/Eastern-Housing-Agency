@@ -104,3 +104,17 @@ model PageView {
   @@index([userId])
   @@index([path])
 }
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  rating     Int      @default(5)
+  text       String   @db.Text
+  approved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@index([approved])
+  @@index([createdAt])
+}

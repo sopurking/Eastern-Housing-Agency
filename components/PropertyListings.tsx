@@ -7,12 +7,24 @@ import Pagination from "./Pagination";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FindYourHome from "./FindYourHome";
+import { useSession } from "next-auth/react";
+import MiniBrowserAuth from "./MiniBrowserAuth";
 
 const PropertyListings = () => {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [pendingPropertyId, setPendingPropertyId] = useState<number | null>(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  // Comprehensive logging
+  React.useEffect(() => {
+    console.log('[PropertyListings] Auth Status:', status);
+    console.log('[PropertyListings] Session:', session);
+    console.log('[PropertyListings] User:', session?.user);
+  }, [status, session]);
 
   const propertiesPerPage = 3;
 
@@ -91,6 +103,30 @@ const PropertyListings = () => {
     },
   ];
 
+  const handleBookInspection = (property: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    console.log('[BookInspection] Button clicked for property:', property.id);
+    console.log('[BookInspection] Current auth status:', status);
+    console.log('[BookInspection] Session exists:', !!session);
+    console.log('[BookInspection] User:', session?.user);
+    
+    if (status === "loading") {
+      console.log('[BookInspection] Auth still loading, please wait...');
+      return;
+    }
+    
+    if (!session || status === "unauthenticated") {
+      console.log('[BookInspection] User NOT authenticated - opening auth popup');
+      sessionStorage.setItem('bookingPropertyId', property.id.toString());
+      sessionStorage.setItem('bookingAction', 'inspection');
+      setShowAuthPopup(true);
+    } else {
+      console.log('[BookInspection] User IS authenticated - opening modal');
+      setSelectedProperty(property);
+    }
+  };
+
   const toggleFavorite = (id: number) => {
     setFavorites((prev) => {
       const newFavorites = new Set(prev);
@@ -165,10 +201,7 @@ const PropertyListings = () => {
 
                 <div className="flex gap-3">
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedProperty(property);
-                    }}
+                    onClick={(e) => handleBookInspection(property, e)}
                     className="flex-1 bg-[#2da3dd] hover:bg-[#1f6f97] text-white py-2.5 rounded-lg font-semibold text-sm"
                   >
                     Book Inspection
@@ -301,6 +334,15 @@ const PropertyListings = () => {
           See More
         </button>
       </div>
+
+      {/* Authentication Popup */}
+      <MiniBrowserAuth
+        isOpen={showAuthPopup}
+        onClose={() => {
+          console.log('[BookInspection] Auth popup closed');
+          setShowAuthPopup(false);
+        }}
+      />
     </div>
   );
 };
