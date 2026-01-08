@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           defer
         /> */}
       </head>
-      <body className="font-sans">
+      <body className="font-sans overflow-x-hidden">
         <Providers>
           <PageTracker />
           {children}

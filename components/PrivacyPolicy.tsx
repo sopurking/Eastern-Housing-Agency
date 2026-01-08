@@ -209,7 +209,7 @@ export default function PrivacyPolicy() {
 
   return (
     <section className="relative py-16 md:py-20 bg-gray-50 w-full">
-      <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-[#2da3dd]/10 blur-3xl pointer-events-none hidden sm:block" />
+      {/* <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full bg-[#2da3dd]/10 blur-3xl pointer-events-none hidden sm:block" /> */}
       <div className="absolute -bottom-16 -left-16 h-72 w-72 rounded-full bg-[#1e55a7]/10 blur-3xl pointer-events-none hidden sm:block" />
 
       <div className="max-w-[1300px] mx-auto px-6">
