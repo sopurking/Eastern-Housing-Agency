@@ -238,27 +238,40 @@ export async function getLocations() {
         state: true,
         city: true,
       },
-      distinct: ['state', 'city'],
     });
 
-    const locationMap = new Map<string, Set<string>>();
-    
+    // state_slug -> { stateLabel, cities }
+    const locationMap = new Map<
+      string,
+      { stateLabel: string; cities: Set<string> }
+    >();
+
     properties.forEach(({ state, city }) => {
-      const trimmedState = state.trim();
-      const trimmedCity = city.trim();
-      
-      if (!locationMap.has(trimmedState)) {
-        locationMap.set(trimmedState, new Set());
+      if (!state || !city) return;
+
+      const normalizedState = state.trim().toLowerCase();
+      const normalizedCity = city.trim().toLowerCase();
+
+      if (!locationMap.has(normalizedState)) {
+        locationMap.set(normalizedState, {
+          stateLabel: toTitleCase(state),
+          cities: new Set(),
+        });
       }
-      locationMap.get(trimmedState)!.add(trimmedCity);
+
+      locationMap
+        .get(normalizedState)!
+        .cities.add(toTitleCase(city));
     });
 
-    const locations = Array.from(locationMap.entries()).map(([state, cities]) => ({
-      state,
-      cities: Array.from(cities).sort(),
-    })).sort((a, b) => a.state.localeCompare(b.state));
+    const locations = Array.from(locationMap.values())
+      .map(({ stateLabel, cities }) => ({
+        state: stateLabel,
+        cities: Array.from(cities).sort(),
+      }))
+      .sort((a, b) => a.state.localeCompare(b.state));
 
-    console.log('📍 Unique locations:', JSON.stringify(locations, null, 2));
+    console.log("📍 Normalized unique locations:", locations);
 
     return { success: true, locations };
   } catch (error) {
@@ -266,3 +279,14 @@ export async function getLocations() {
     return { error: "Failed to fetch locations" };
   }
 }
+
+/* ----------------------------------
+   Helpers
+---------------------------------- */
+function toTitleCase(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
