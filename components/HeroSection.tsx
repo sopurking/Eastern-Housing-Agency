@@ -51,8 +51,8 @@ const HeroSection = () => {
             </span>
             
            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6">
-  Find Your Perfect{" "}
-  <span className="bg-[#0d2549] px-5 py-2 rounded-xl inline-block">
+  Find Your Perfect<br />
+  <span className="bg-[#0d2549] px-5 py-2 rounded-xl inline-block mt-2 md:mt-5">
     Home
   </span>{" "}
   with Ease
